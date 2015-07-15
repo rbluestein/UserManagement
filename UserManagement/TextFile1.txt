@@ -1,0 +1,45 @@
+CREATE PROCEDURE DeleteDepartment
+(
+   @DepartmentID    int
+)
+AS
+
+-- This sproc performs two DELETEs.  First it deletes all of the
+-- department's associated employees.  Next, it deletes the department.
+
+-- STEP 1: Start the transaction
+BEGIN TRANSACTION
+
+-- STEP 2 & 3: Issue the DELETE statements, checking @@ERROR after each statement
+DELETE FROM Employees
+WHERE DepartmentID = @DepartmentID
+
+-- Rollback the transaction if there were any errors
+IF @@ERROR <> 0
+ BEGIN
+    -- Rollback the transaction
+    ROLLBACK
+
+    -- Raise an error and return
+    RAISERROR ('Error in deleting employees in DeleteDepartment.', 16, 1)
+    RETURN
+ END
+
+
+DELETE FROM Departments
+WHERE DepartmentID = @DepartmentID
+
+-- Rollback the transaction if there were any errors
+IF @@ERROR <> 0
+ BEGIN
+    -- Rollback the transaction
+    ROLLBACK
+
+    -- Raise an error and return
+    RAISERROR ('Error in deleting department in DeleteDepartment.', 16, 1)
+    RETURN
+ END
+
+-- STEP 4: If we reach this point, the commands completed successfully
+--         Commit the transaction....
+COMMIT

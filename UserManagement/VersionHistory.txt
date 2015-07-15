@@ -1,0 +1,25 @@
+Version Num			Date								Comments
+0.95						08/14/2008					Enabled email.
+																Added ClearLog().
+																Rewrote AppSession.New to set DBHost to detected http host.
+0.951					08/15/2008					Added email notification for newly added users in UserMaintain.PerformSave()	.		
+0.96						08/24/2008					Added license and carrier reports. Modified permissions to work differently between hbg-sql and hbg-tst.
+0.97						08/27/2008					Added USE permissions to IT. Refined AppAdmin.Report. Set up 30 minute timeout.									
+0.971					08/28/2008					Corrected defect in carrier query.
+0.972					08/29/2008					Added CAE, CLE permissions to IT. Implemented post-timeout logic.
+1.0						09/07/2008					Added logged in UserID to log. Switched email to help desk.
+1.01						09/09/2008					Added supervisors to enroller dropdown in BulkLicense and BulkAppointment.
+1.02						10/01/2008					Update child tables with new UserID if UserID has been changed.
+1.03						10/22/2008					Fixed logic error in License Query enroller status filter.
+1.04						10/29/2008					Fixed error validating date sequence for appointments because appt expiration date no longer maintained.
+1.05						11/03/2008					QueryCarrier HandleFilter.
+1.06						11/05/2008					Added PermissionEdit to IT. Added Edited by to notice sent to NetAdmin.
+1.07						11/13/2008					Fixed License Query long term care filter defect.
+1.08						12/10/2008					Rewrote Long Term Care. Moved basic cert state and dates to UserMaintain. Added state specific cert dates. Replaced maintainable status field with LTC cert logic.
+																Changed UserMaintain.IsDataValid to accept blank values for primary phone and email address for non-BVI employees.
+1.09						01/10/2009					Changed field name to LTCRequiresStateSpecificCert, reflecting change in Codes_State field name in test.
+1.10						01/16/2009					Rewrote DG.AffixMenuBand to display Go button whenever a filter is present.
+1.11						03/10/2009					Folded AppSession, AppAdmin, Authenticator into Enviro. Added manual edit of appointment status.
+1.14						04/29/2009					Added Common.DropdownFindByValueSelect to fix bug caused by case sensitivity mismatch.
+1.15						08/04/2009					Added OKToRenewInd for license.
+1.28						03/26/2009					Added AdminLicRight with related functionality.

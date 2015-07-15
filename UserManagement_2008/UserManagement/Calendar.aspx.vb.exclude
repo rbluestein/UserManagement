@@ -1,0 +1,16 @@
+﻿
+Partial Class Calendar
+    Inherits System.Web.UI.Page
+
+    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        If Request.QueryString("targetctl") <> Nothing Then
+            If Request.QueryString("targetctl") = "hdTermDate" Then
+                PageCaption.Text = "Select Term Date"
+            Else
+                PageCaption.Text = "Select Date"
+            End If
+        Else
+            PageCaption.Text = "Select Date"
+        End If
+    End Sub
+End Class

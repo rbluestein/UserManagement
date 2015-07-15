@@ -1,0 +1,239 @@
+﻿A:hover
+{
+    COLOR: #00ff66
+}
+
+.CellSeparator
+{
+    BACKGROUND: #990000;
+    HEIGHT: 2px;
+}
+
+
+/* ___ Datagrid menu ___*/
+/* green  	background:#33ffcc;  */
+
+.DGMenuItem
+{
+	background:#b0e0e6;
+	border-collapse:collapse;
+	border:1px solid blue;
+	font: 8pt Arial, Helvetica, sans-serif;
+}
+
+.DGMenuItem a
+{
+	display: block;
+	text-decoration:none;
+	color:black;
+}
+
+.DGMenuItem a:hover
+{
+	background-color:#0000ff;
+	color:white;
+}
+/* ___ End datagrid menu ___*/
+
+        
+/* ___ MAIN MENU ___*/
+
+.MainMenuTbl{
+}
+
+.MainMenuTbl table{
+	width: 125px;
+	background-color: #eeeedd;
+}
+
+.MainMenuTbl a{
+	font: bold 13px Verdana;
+	padding: 2px;
+	padding-left: 4px;
+	display: block;
+	width: 125px;
+	color: black;
+	text-decoration: none;
+}
+
+.MainMenuTbl a:hover{
+	background-color: blue;
+	color: white;
+}
+
+
+/* ___ TEST TABLE ___*/
+.PrimaryTblDG
+{
+	background: #eeeedd;
+	FONT: 9pt Arial, Helvetica, sans-serif;
+	BORDER-TOP: #eeeedd 10px solid; BORDER-BOTTOM: #eeeedd 10px solid;	
+}
+
+.PrimaryTblDGTitle
+{
+	FONT: 20pt Arial, Helvetica, sans-serif;
+    PADDING-LEFT: 10px;
+    PADDING-RIGHT: 10px	
+}
+
+
+/* ___ PRIMARY TABLE ___*/
+
+.PrimaryTbl
+{
+	background: #eeeedd;
+	FONT: 9pt Arial, Helvetica, sans-serif;
+	BORDER-TOP: #eeeedd 10px solid; BORDER-RIGHT: #eeeedd 10px solid; BORDER-LEFT: #eeeedd 10px solid; BORDER-BOTTOM: #eeeedd 10px solid;
+}
+
+.PrimaryTblEmbedded
+{
+	background: #eeeedd;
+	FONT: 9pt Arial, Helvetica, sans-serif;
+}
+
+.PrimaryTbl A {
+	text-decoration: none;
+}
+
+.PrimaryTblTitle
+{
+	FONT: 20pt Arial, Helvetica, sans-serif;
+}
+
+.Cell9Reg
+{
+	FONT: 9pt Arial, Helvetica, sans-serif;
+}
+
+
+/* ___ CELLL/CELLR/CELLC/CELLHEAD ___*/
+/*
+.CellL
+{
+	
+    BACKGROUND: #efefe7;
+	COLOR: #000000;
+    FONT: 8pt Arial, Helvetica, sans-serif;
+    TEXT-ALIGN: left;
+    TEXT-DECORATION: none;
+    PADDING-LEFT: 4px;
+    PADDING-RIGHT: 4px
+}
+
+.CellR
+{
+	TEXT-ALIGN: right;
+    BACKGROUND: #efefe7;
+	COLOR: #000000;
+    FONT: 8pt Arial, Helvetica, sans-serif;
+    TEXT-DECORATION: none
+}
+
+.CellC
+{
+	TEXT-ALIGN: center;
+    BACKGROUND: #efefe7;
+	COLOR: #000000;
+    FONT: 8pt Arial, Helvetica, sans-serif;
+    TEXT-DECORATION: none
+}
+
+.CellHead
+{
+    BACKGROUND: #efefe7;
+	COLOR: #000000;
+    FONT: 16pt Arial, Helvetica, sans-serif;
+    TEXT-ALIGN: left;
+    TEXT-DECORATION: none
+}
+*/
+
+/* ___ LOGON ___*/
+
+/*
+.LGLine
+{
+    BACKGROUND: #990000
+}
+
+.LGLabel
+{
+    BACKGROUND: #efefe7;
+    COLOR: #000000;
+    FONT: 8pt Arial, Helvetica, sans-serif;
+    TEXT-ALIGN: right;
+    TEXT-DECORATION: none
+}
+
+.LGField
+{
+    BACKGROUND: #efefe7;
+    COLOR: blue;
+    FONT: 11pt Arial, Helvetica, sans-serif;
+    TEXT-DECORATION: none
+}
+
+.LGFieldRight
+{
+	TEXT-ALIGN: right;
+    BACKGROUND: #efefe7;
+    COLOR: blue;
+    FONT: 11pt Arial, Helvetica, sans-serif;
+    TEXT-DECORATION: none
+}
+*/
+
+/* ___ DATAGRID ___*/
+
+.DG
+{
+	background: #eeeedd;
+	FONT: 9pt Arial, Helvetica, sans-serif;
+	PADDING-LEFT: 4px;
+    PADDING-RIGHT: 4px;
+}
+
+.DGH
+{
+    BACKGROUND: #eeeedd;
+    COLOR: #000000;
+    FONT: bold italic 9pt Arial, Helvetica, sans-serif;
+    TEXT-ALIGN: center;
+}
+
+.DGOdd
+{
+	background: #eeeedd;
+    COLOR: #000000;
+    FONT: 8pt Arial, Helvetica, sans-serif;
+    TEXT-ALIGN: center
+}
+
+.DGEven 
+{
+    BACKGROUND: 	#B0E0E6;
+    COLOR: #000000;
+    FONT: 8pt Arial, Helvetica, sans-serif;
+    TEXT-ALIGN: center
+}
+
+DGEmbedded
+{
+	background: #eeeedd;
+	FONT: 9pt Arial, Helvetica, sans-serif;
+}
+
+DGFilter
+{
+    FONT: 8pt Arial, Helvetica, sans-serif;	
+}	
+
+.oldDGEmbedded
+{
+	background: #eeeedd;
+	FONT: 9pt Arial, Helvetica, sans-serif;
+	PADDING-LEFT: 10px;
+    PADDING-RIGHT: 10px;	
+}

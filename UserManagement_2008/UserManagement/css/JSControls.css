@@ -1,0 +1,45 @@
+.MPtable
+{		
+	BORDER-RIGHT: blue 1px solid; 
+	BORDER-TOP: blue 1px solid; 
+	BACKGROUND: #b0e0e6; 
+	FONT: 9pt Arial, Helvetica, sans-serif; 
+	BORDER-LEFT: blue 1px solid; 
+	BORDER-BOTTOM: blue 1px solid; 
+	BORDER-COLLAPSE: collapse;
+}
+
+.MPtd
+{
+	BORDER-RIGHT: blue 1px solid; 
+	BORDER-TOP: blue 1px solid;
+	BORDER-LEFT: blue 1px solid; 
+	BORDER-BOTTOM: blue 1px solid; 
+	BACKGROUND: #b0e0e6; 
+	FONT: 9pt Arial, Helvetica, sans-serif; 
+	VERTICAL-ALIGN: top; 
+	text-align:center;
+}
+
+.MPtd a
+{
+	padding: 2px 2px 2px 2px;
+	DISPLAY: block; 
+	WIDTH: 100%; 
+	COLOR: blue; 
+	BACKGROUND: #b0e0e6; 
+	FONT-FAMILY: 9pt Arial, Helvetica, sans-serif; 
+	HEIGHT: 100%; 
+	TEXT-DECORATION: none;
+}	
+
+.MPtd a:hover 
+{
+	padding: 2px 2px 2px 2px;
+	DISPLAY: block; 
+	WIDTH: 100%; 
+	COLOR: blue; 
+	BACKGROUND: yellow;
+	FONT-FAMILY: 9pt Arial, Helvetica, sans-serif;
+	HEIGHT: 100%; 
+}

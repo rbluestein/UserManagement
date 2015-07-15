@@ -1,0 +1,167 @@
+'Imports System
+'Imports System.Runtime.InteropServices
+'Imports System.Drawing
+'Imports System.Drawing.Imaging
+'Imports System.Diagnostics
+
+Public Class Report
+    Private cEnviro As Enviro
+    Private cCommon As Common
+
+    Public Sub New()
+        Dim SessionObj As System.Web.SessionState.HttpSessionState = System.Web.HttpContext.Current.Session
+        cEnviro = SessionObj("Enviro")
+        cCommon = New Common
+    End Sub
+
+    Public Function Report(ByVal ReportType As ReportTypeEnum, ByVal Message As String) As String
+        Dim Coll As New Collection
+        Dim SendEmailResults As Results = Nothing
+        Dim HeaderMessage As String = String.Empty
+        Dim WriteToLog As Boolean
+        Dim SendEmailPlease As Boolean
+
+        Try
+
+            '___ Write to log
+            Select Case ReportType
+                Case ReportTypeEnum.Information, ReportTypeEnum.ErrorNoShutdown
+                    WriteToLogFile(Message)
+                    WriteToLog = True
+                Case ReportTypeEnum.Error
+                    WriteToLogFile(Message & " ** ERROR FORCING APPLICATION SHUTDOWN **")
+                    WriteToLog = True
+            End Select
+
+            ' ___ Email
+            Select Case ReportType
+                Case ReportTypeEnum.Error, ReportTypeEnum.ErrorNoShutdown
+                    SendEmailPlease = True
+                    Coll.Add(cEnviro.LogFileFullPath)
+
+                    'SendEmailResults = SendEmail("rbluestein@benefitvision.com", cEnviro.LoggedInUserID & "@benefitvision.com", "", "UserManagement error - " & cEnviro.LoggedInUserID & "/" & cEnviro.LoginIP, "An error occurred in the execution of UserManagement. Attached please find a copy of the application log and a screen shot.", Coll)
+                    SendEmailResults = SendEmail("HelpDesk@benefitvision.com", cEnviro.LoggedInUserID & "@benefitvision.com", "rbluestein@benefitvision.com", "UserManagement error - " & cEnviro.LoggedInUserID & "/" & cEnviro.LoginIP, "An error occurred in the execution of UserManagement. Attached please find a copy of the application log.", Coll)
+
+            End Select
+
+            ' ___ Header message shutdown
+            Select Case ReportType
+                Case ReportTypeEnum.Error, ReportTypeEnum.Timeout
+                    HeaderMessage = "An error has occurred requiring UserManagement to shut down. "
+            End Select
+
+            ' ___ Header message log
+            Select Case ReportType
+                Case ReportTypeEnum.InformationNoLog, ReportTypeEnum.Timeout
+                    ' no action
+                Case Else
+                    HeaderMessage &= "You may view the details of the problem in the log. "
+            End Select
+
+            ' ___ Email
+            If SendEmailPlease AndAlso SendEmailResults.Success Then
+                HeaderMessage &= "UserManagement has emailed a copy of the log to the help desk."
+            End If
+
+            Return HeaderMessage.Trim
+
+        Catch ex As Exception
+            Throw New Exception("Error #802: Report Report. " & ex.Message)
+        End Try
+    End Function
+
+    Public Function SendEmail(ByVal SendTo As String, ByVal From As String, ByVal cc As String, ByVal Subject As String, ByVal TextBody As String, Optional ByRef AttachmentColl As Collection = Nothing) As Results
+        Dim schema As String
+        Dim MyResults As New Results
+        Dim i As Integer
+
+        Try
+
+            Dim CDOConfig As New CDO.Configuration
+            schema = "http://schemas.microsoft.com/cdo/configuration/"
+            CDOConfig.Fields("http://schemas.microsoft.com/cdo/configuration/sendusing").Value = 2
+            ' CDOConfig.Fields("http://schemas.microsoft.com/cdo/configuration/smtpserverport").Value = 25
+            CDOConfig.Fields("http://schemas.microsoft.com/cdo/configuration/smtpserver").Value = "mail.benefitvision.com"
+            CDOConfig.Fields.Update()
+
+            Dim iMsg As New CDO.Message
+            iMsg.To = SendTo
+            iMsg.From = From
+            iMsg.CC = cc
+            iMsg.Subject = Subject
+
+            If Not AttachmentColl Is Nothing Then
+                For i = 1 To AttachmentColl.Count
+                    iMsg.AddAttachment(AttachmentColl(i))
+                Next
+            End If
+
+            iMsg.Configuration = CDOConfig
+            iMsg.TextBody = TextBody
+            'imsg.HTMLBody = htmlbody
+
+            iMsg.Send()
+
+            ' ___ Clean up
+            iMsg.Attachments.DeleteAll()
+            CDOConfig = Nothing
+            iMsg = Nothing
+
+            MyResults.Success = True
+            Return MyResults
+
+        Catch ex As Exception
+            MyResults.Success = False
+            MyResults.Msg = "Error #803: " & ex.Message
+            Return MyResults
+        End Try
+    End Function
+
+    Private Function ReadLogFile() As String
+        Dim StreamReader As System.IO.StreamReader
+        Dim FileText As String = Nothing
+
+        Try
+            StreamReader = New System.IO.StreamReader(cEnviro.LogFileFullPath)
+            FileText = StreamReader.ReadToEnd
+
+            'Do While StreamReader.Peek() >= 0
+            '    'Console.WriteLine(StreamReader.ReadLine())
+
+            '    x = StreamReader.ReadLine()
+            'Loop
+            StreamReader.Close()
+            Return FileText
+
+        Catch
+            Return FileText
+        End Try
+    End Function
+
+    Private Sub WriteToLogFile(ByVal Message As String)
+        'Dim FileInfo As System.IO.FileInfo
+        Dim StreamWriter As System.IO.StreamWriter = Nothing
+
+        Try
+
+            Message = Replace(Message, "~", "")
+
+            'FileInfo = New System.IO.FileInfo(cEnviro.LogFileFullPath)
+            StreamWriter = New System.IO.StreamWriter(cEnviro.LogFileFullPath, True)
+            'StreamWriter.Write("[" & Date.Now.ToUniversalTime.AddHours(-5).ToString & "] " & Message & vbCrLf)
+            StreamWriter.Write(GetTimeStamp() & Message & vbCrLf)
+            StreamWriter.Close()
+        Catch ex As Exception
+            Try
+                StreamWriter.Close()
+            Catch
+            End Try
+        End Try
+    End Sub
+
+    Private Function GetTimeStamp() As String
+        ' Return "[" & Date.Now.ToUniversalTime.AddHours(-5).ToString & "] "
+        Return "[" & Date.Now.ToUniversalTime.AddHours(-5).ToString & " " & cEnviro.LoggedInUserID & "] "
+    End Function
+
+End Class

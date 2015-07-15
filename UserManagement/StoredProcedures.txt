@@ -1,0 +1,104 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+ALTER  PROCEDURE usp_DeleteUser
+(
+ 	@UserID varchar(50)
+)
+AS
+
+BEGIN TRANSACTION
+
+	BEGIN
+		DELETE FROM UserAppointments WHERE UserID = @UserID
+		IF @@ERROR <> 0
+		BEGIN
+		    	ROLLBACK
+			SELECT Results = 'Error: Cannot delete appointments'
+		    	RETURN
+		END
+	
+		DELETE FROM UserLicenses WHERE UserID = @UserID
+		IF @@ERROR <> 0
+		BEGIN
+		    	ROLLBACK
+			SELECT Results = 'Error: Cannot delete license'
+		    	RETURN
+		END
+
+		DELETE FROM Users WHERE UserID = @UserID
+		IF @@ERROR <> 0
+		BEGIN
+		    	ROLLBACK
+			SELECT Results = 'Error: Cannot delete user'
+		    	RETURN
+		END
+	END
+		
+COMMIT
+
+SELECT Results = 'Success'
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+
+
+
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+ALTER  PROCEDURE usp_DeleteLicense
+(
+ 	@UserID varchar(50),
+ 	@State varchar(50)
+)
+AS
+
+BEGIN TRANSACTION
+
+	BEGIN
+		DELETE FROM UserAppointments WHERE UserID = @UserID AND State = @State
+		IF @@ERROR <> 0
+		BEGIN
+		    	ROLLBACK
+			SELECT Results = 'Error: Cannot delete appointments'
+		    	RETURN
+		END
+	
+		DELETE FROM UserLicenses WHERE UserID = @UserID AND State = @State
+		IF @@ERROR <> 0
+		BEGIN
+		    	ROLLBACK
+			SELECT Results = 'Error: Cannot delete license'
+		    	RETURN
+		END
+	END
+		
+COMMIT
+
+SELECT Results = 'Success'
+
+
+GO
+SET QUOTED_IDENTIFIER OFF 
+GO
+SET ANSI_NULLS ON 
+GO
+
+
+
+
+
+
+

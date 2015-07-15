@@ -1,0 +1,130 @@
+    Private Sub DisplayPage(ByVal PageMode As PageMode, ByVal DG As DG, ByVal OrderByType As DG.OrderByType, Optional ByVal OrderByField As String = Nothing)
+        Dim i As Integer
+        Dim dt As DataTable
+        Dim Sql As String
+        Dim ShowFilter As Boolean
+        Dim AccessLevel As RightsClass.AccessLevelEnum
+        Dim Role As String
+        Dim LocationID As String
+        Dim SecurityWhereClause As String
+
+        Try
+
+            ' ___ Get a filter reference
+            Dim Filter As DG.Filter
+            Filter = DG.GetFilter
+
+            ' ___ UserID, FullName
+            If PageMode <> PageMode.Initial Then
+                Filter.Coll("UserID").SetFilterValue(cUserSess.UserIDFilter)
+                Filter.Coll("FullName").SetFilterValue(cUserSess.FullNameFilter)
+            End If
+
+            ' ___ Role
+            dt = cCommon.GetDT("Select Role from Codes_Role Order By Role")
+            Filter("Role").AddDropdownItem("", "", True)
+            For i = 0 To dt.Rows.Count - 1
+                Filter("Role").AddDropdownItem(dt.Rows(i)(0), dt.Rows(i)(0), False)
+            Next
+            If PageMode <> PageMode.Initial Then
+                Filter.Coll("Role").SetFilterValue(cUserSess.RoleFilter)
+            End If
+
+            ' ___ StatusCode
+            dt = cCommon.GetDT("Select Status from Codes_Status Order By Status")
+            Filter("StatusCode").AddDropdownItem("", "", True)
+            For i = 0 To dt.Rows.Count - 1
+                Filter("StatusCode").AddDropdownItem(dt.Rows(i)(0), dt.Rows(i)(0), False)
+            Next
+            If PageMode <> PageMode.Initial Then
+                Filter.Coll("StatusCode").SetFilterValue(cUserSess.StatusCodeFilter)
+            End If
+
+            '' ___ Company
+            'dt = Common.GetDT("Select CompanyID from Codes_CompanyID Order By CompanyID")
+            'Filter("CompanyID").AddDropdownItem("", "", True)
+            'For i = 0 To dt.Rows.Count - 1
+            '    Filter("CompanyID").AddDropdownItem(dt.Rows(i)(0), dt.Rows(i)(0), False)
+            'Next
+            'If PageMode = PageMode.ReturnFromChild Or PageMode = PageMode.CalledByOther Then
+            '    Filter.Coll("CompanyID").SetOverrideValue(UserSess.CompanyIDFilter)
+            'End If
+
+            ' ___ Company
+            dt = cCommon.GetDT("Select ClientID from Codes_ClientID Order By ClientID")
+            Filter("CompanyID").AddDropdownItem("", "", True)
+            For i = 0 To dt.Rows.Count - 1
+                Filter("CompanyID").AddDropdownItem(dt.Rows(i)(0), dt.Rows(i)(0), False)
+            Next
+            If PageMode <> PageMode.Initial Then
+                Filter.Coll("CompanyID").SetFilterValue(cUserSess.CompanyIDFilter)
+            End If
+
+            ' ___ Location
+            dt = cCommon.GetDT("Select LocationID from Codes_LocationID Order By LocationID")
+            Filter("LocationID").AddDropdownItem("", "", True)
+            For i = 0 To dt.Rows.Count - 1
+                Filter("LocationID").AddDropdownItem(dt.Rows(i)(0), dt.Rows(i)(0), False)
+            Next
+            If PageMode <> PageMode.Initial Then
+                Filter.Coll("LocationID").SetFilterValue(cUserSess.LocationIDFilter)
+            End If
+
+            ' ___ Handle the sort
+            If cUserSess.SortReference <> Nothing Then
+                DG.UpdateSortReference(cUserSess.SortReference)
+            End If
+            DG.SetSortElements(OrderByField, OrderByType)
+
+            ' ___ Get the security settings for the logged in user
+            cRights.GetSecurityFlds(cAppSession, AccessLevel, Role, LocationID)
+
+            ' ___ Load the data
+            Sql = "SELECT UserId, LTrim(RTrim(LastName)) + ', ' + LTrim(RTrim(FirstName))  FullName,  LTrim(RTrim(FirstName)) + ' ' + LTrim(RTrim(LastName)) FirstLastName, StatusCode, Role, CompanyID, LocationID, IsSupvOrEnroller = case when Role='ENROLLER' then '1' when Role='SUPERVISOR' then '1'   else '0' end  FROM Users"
+
+            ' ___ Where clause: Get the restrictions imposed by the security rules.
+            Select Case AccessLevel
+                Case RightsClass.AccessLevelEnum.AllAccess
+                    SecurityWhereClause = String.Empty
+                Case RightsClass.AccessLevelEnum.SupervisorAccess
+                    'SecurityWhereClause = " (Role = 'SUPERVISOR' or Role = 'ENROLLER') and LocationID = '" & LocationID & "'"
+                    SecurityWhereClause = " (UserID = '" & cAppSession.LoggedInUserID & " ' or Role = 'ENROLLER') and LocationID = '" & LocationID & "'"
+                Case RightsClass.AccessLevelEnum.EnrollerAccess
+                    SecurityWhereClause = "UserID = '" & cAppSession.LoggedInUserID & "'"
+            End Select
+
+            'DG.GenerateSQL(Sql, ShowFilter, SecurityWhereClause, OrderByType, Request)
+            DG.GenerateSQL(Sql, ShowFilter, SecurityWhereClause, OrderByType, Request, cUserSess.FilterOnOffState, Request.Form("hdFilterShowHideToggle"))
+
+
+            ' User opens this page. Since PageMode is set to Initial, the whereclause adds where 0 = 1 to 
+            ' suppress the data. If the user navigates to a different page and then returns to this page, PageMode is no longer set
+            ' to initial and the where clause omits the 0 = 1 statement. The Sql attempts to return all of the records the sql statement
+            ' with no restrictions. The solution is to save off the current PageMode variable. Then, the evaluations is:
+            ' -- If the last PageMode is Initial and the current PageMode is NOT postback, then suppress the data.
+
+            If cUserSess.PageMode = PageMode.Initial And PageMode <> PageMode.Postback Then
+                dt = Nothing
+            Else
+                dt = cCommon.GetDT(Sql, cAppSession.DBHost, "UserManagement", True)
+            End If
+            cUserSess.PageMode = PageMode
+
+
+            ' ___ Write the datagrid to the page
+            litDG.Text = DG.GetText(dt, Nothing)
+
+            ' ___ Set the FilterOnOffState
+            If DG.FilterOperationMode = DG.FilterOperationModeEnum.FilterSwitchable AndAlso ShowFilter Then
+                cUserSess.FilterOnOffState = "on"
+            Else
+                cUserSess.FilterOnOffState = "off"
+            End If
+
+            ' ___ Set the last field sorted and sort direction in the sort reference
+            cUserSess.SortReference = DG.GetSortReference
+
+        Catch ex As Exception
+            Throw New Exception("Error #107: Index DisplayPage. " & ex.Message)
+        End Try
+    End Sub

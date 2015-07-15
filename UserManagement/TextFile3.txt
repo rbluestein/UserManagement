@@ -1,0 +1,365 @@
+#Region " SQL Server DataTypes "
+Public Class DataTypeSQL
+End Class
+
+Public Class DateTimeSQL
+    Inherits DataTypeSQL
+    Private cValue As Object = DBNull.Value
+
+    Public ReadOnly Property SqlOut() As String
+        Get
+            If IsDBNull(cValue) Then
+                Return "null"
+            Else
+                Return "'" & ToText & "'"
+            End If
+        End Get
+    End Property
+    Public ReadOnly Property BVISqlOut() As String
+        Get
+            If IsDBNull(cValue) Then
+                Return "null"
+            Else
+                Return "'" & ToText & "'"
+            End If
+        End Get
+    End Property
+    Public Property Value()
+        Get
+            If IsDBNull(cValue) Then
+                Return DBNull.Value
+            Else
+                Return CType(cValue, DateTime)
+            End If
+        End Get
+        Set(ByVal Value As Object)
+            If IsDate(Value) Then
+                cValue = CType(Value, DateTime)
+            ElseIf IsDBNull(Value) Then
+                cValue = DBNull.Value
+            ElseIf Value = Nothing Then
+                cValue = DBNull.Value
+            Else
+                cValue = CType(Value, DateTime)
+            End If
+        End Set
+    End Property
+    Public ReadOnly Property ToText()
+        Get
+            If IsDBNull(cValue) Then
+                Return String.Empty
+            Else
+                Return CType(cValue, DateTime)
+            End If
+        End Get
+    End Property
+    Public Sub New(ByVal InitValue As Object)
+        Value = InitValue
+    End Sub
+End Class
+
+Public Class IntSQL
+    Inherits DataTypeSQL
+    Private cValue As Object = DBNull.Value
+    Public ReadOnly Property SqlOut() As String
+        Get
+            If IsDBNull(cValue) Then
+                Return "null"
+            Else
+                Return ToText
+            End If
+        End Get
+    End Property
+    Public ReadOnly Property BVISqlOut() As String
+        Get
+            If IsDBNull(cValue) Then
+                Return "0"
+            Else
+                Return ToText
+            End If
+        End Get
+    End Property
+    Public Property Value()
+        Get
+            If IsDBNull(cValue) Then
+                Return DBNull.Value
+            Else
+                Return CType(cValue, System.Int64)
+            End If
+        End Get
+        Set(ByVal Value As Object)
+            If IsDBNull(Value) Then
+                cValue = DBNull.Value
+            ElseIf Value = Nothing Then
+                cValue = DBNull.Value
+            Else
+                cValue = CType(Value, System.Int64)
+            End If
+        End Set
+    End Property
+    Public ReadOnly Property ToText()
+        Get
+            If IsDBNull(cValue) Then
+                Return String.Empty
+            Else
+                Return CType(cValue, System.Int64)
+            End If
+        End Get
+    End Property
+    Public Sub New(ByVal InitValue As Object)
+        Value = InitValue
+    End Sub
+End Class
+
+Public Class VarcharSQL
+    Inherits DataTypeSQL
+    Private cValue As Object = DBNull.Value
+    Private cLength As Integer
+    Private cIsNullable As Boolean
+
+    Public Property IsNullable() As Boolean
+        Get
+            Return cIsNullable
+        End Get
+        Set(ByVal Value As Boolean)
+            cIsNullable = Value
+        End Set
+    End Property
+    Public Property Length() As Integer
+        Get
+            Return cLength
+        End Get
+        Set(ByVal Value As Integer)
+            cLength = Value
+        End Set
+    End Property
+    Public ReadOnly Property SqlOut() As String
+        Get
+            If IsDBNull(cValue) Then
+                Return "null"
+            Else
+                Return "'" & ToText & "'"
+            End If
+        End Get
+    End Property
+    Public ReadOnly Property BVISqlOut() As String
+        Get
+            If IsDBNull(cValue) Then
+                If cIsNullable Then
+                    Return "null"
+                Else
+                    Return "''"
+                End If
+            Else
+                Return "'" & ToText & "'"
+            End If
+        End Get
+    End Property
+    Public Property Value()
+        Get
+            If IsDBNull(cValue) OrElse cValue = Nothing Then
+                Return DBNull.Value
+            Else
+                Return CType(cValue, System.String)
+            End If
+        End Get
+        Set(ByVal Value As Object)
+            If IsDBNull(Value) OrElse Value = Nothing Then
+                cValue = DBNull.Value
+            ElseIf IsDate(Value) Then
+                cValue = CType(Value, System.String)
+            ElseIf IsNumeric(Value) Then
+                cValue = CType(Value, System.String)
+            ElseIf Value = "null" Then
+                cValue = "null"
+            Else
+                cValue = CType(Value, System.String)
+            End If
+        End Set
+    End Property
+    Public ReadOnly Property ToText()
+        Get
+            If IsDBNull(cValue) OrElse cValue = Nothing Then
+                Return String.Empty
+            Else
+                Return CType(cValue, System.String)
+            End If
+        End Get
+    End Property
+    Public Sub New(ByVal InitValue As Object, Optional ByVal Length As Integer = 0)
+        Value = InitValue
+        cLength = Length
+    End Sub
+End Class
+
+Public Class BitSQL
+    Inherits DataTypeSQL
+    Private cValue As Object = DBNull.Value
+    Public ReadOnly Property SqlOut() As String
+        Get
+            If IsDBNull(cValue) Then
+                Return "null"
+            Else
+                If cValue = 0 Then
+                    Return "0"
+                Else
+                    Return "1"
+                End If
+            End If
+        End Get
+    End Property
+    Public ReadOnly Property BVISqlOut() As String
+        Get
+            If IsDBNull(cValue) Then
+                Return "0"
+            Else
+                If cValue = 0 Then
+                    Return "0"
+                Else
+                    Return "1"
+                End If
+            End If
+        End Get
+    End Property
+    Public Property Value()
+        Get
+            If IsDBNull(cValue) Then
+                Return DBNull.Value
+            Else
+                Return CType(cValue, System.Int64)
+            End If
+        End Get
+        Set(ByVal Value As Object)
+            If IsDBNull(Value) Then
+                cValue = DBNull.Value
+            Else
+                If Value Then
+                    cValue = 1
+                Else
+                    cValue = 0
+                End If
+            End If
+        End Set
+    End Property
+    Public ReadOnly Property ToText()
+        Get
+            If IsDBNull(cValue) Then
+                Return String.Empty
+            Else
+                Return CType(cValue, System.Int64)
+            End If
+        End Get
+    End Property
+    Public Sub New(ByVal InitValue As Object)
+        Value = InitValue
+    End Sub
+End Class
+
+
+
+Public Class MoneySQL
+    Inherits DataTypeSQL
+    Private cValue As Object = DBNull.Value
+    Public ReadOnly Property SqlOut() As String
+        Get
+            If IsDBNull(cValue) Then
+                Return "null"
+            Else
+                Return ToText
+            End If
+        End Get
+    End Property
+    Public ReadOnly Property BVISqlOut() As String
+        Get
+            If IsDBNull(cValue) Then
+                Return "0"
+            Else
+                Return ToText
+            End If
+        End Get
+    End Property
+    Public Property Value()
+        Get
+            If IsDBNull(cValue) Then
+                Return DBNull.Value
+            Else
+                'Return CType(cValue, System.Decimal)
+                Return FormatNumber(CType(cValue, System.Decimal), 2)
+            End If
+        End Get
+        Set(ByVal Value As Object)
+            If IsDBNull(Value) Then
+                cValue = DBNull.Value
+            Else
+                cValue = CType(Value, System.Decimal)
+            End If
+        End Set
+    End Property
+    Public ReadOnly Property ToText()
+        Get
+            If IsDBNull(cValue) Then
+                Return String.Empty
+            Else
+                'Return CType(cValue, System.Decimal)
+                Return FormatNumber(CType(cValue, System.Decimal), 2)
+            End If
+        End Get
+    End Property
+    Public Sub New(ByVal InitValue As Object)
+        Value = InitValue
+    End Sub
+End Class
+
+
+
+Public Class FloatSQL
+    Inherits DataTypeSQL
+    Private cValue As Object = DBNull.Value
+    Public ReadOnly Property SqlOut() As String
+        Get
+            If IsDBNull(cValue) Then
+                Return "null"
+            Else
+                Return ToText
+            End If
+        End Get
+    End Property
+    Public ReadOnly Property BVISqlOut() As String
+        Get
+            If IsDBNull(cValue) Then
+                Return "0"
+            Else
+                Return ToText
+            End If
+        End Get
+    End Property
+    Public Property Value()
+        Get
+            If IsDBNull(cValue) Then
+                Return DBNull.Value
+            Else
+                Return CType(cValue, System.Double)
+            End If
+        End Get
+        Set(ByVal Value As Object)
+            If IsDBNull(Value) Then
+                cValue = DBNull.Value
+            Else
+                cValue = CType(Value, System.Double)
+            End If
+        End Set
+    End Property
+    Public ReadOnly Property ToText()
+        Get
+            If IsDBNull(cValue) Then
+                Return String.Empty
+            Else
+                Return CType(cValue, System.Double)
+            End If
+        End Get
+    End Property
+    Public Sub New(ByVal InitValue As Object)
+        Value = InitValue
+    End Sub
+End Class
+#End Region

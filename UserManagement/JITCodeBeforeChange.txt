@@ -1,0 +1,145 @@
+Public Class JITAppt
+    Private Sub PerformJustInTimeAppointments()
+        Dim i As Integer
+        Dim dtStateJITBlock As DataTable
+        Dim QualifyColl As Collection
+        Dim ApptEffectiveDate As Date
+        Dim ApptExpirationDate As Object
+
+        ' ___ If this state is the enroller's resident state and this carrier is a JIT carrier in this state, then the trigger criteria are met
+        If Not IsJITTrigger() Then
+            Exit Sub
+        End If
+
+        ' ___ Return a list of states for which this appointment triggers JIT appointments for this carrier
+        dtStateJITBlock = cCommon.GetDT("SELECT State FROM UserManagement..JIT_Carrier_State WHERE CarrierID = '" & cSess.CarrierID & "'")
+
+        For i = 0 To dtStateJITBlock.Rows.Count - 1
+
+            QualifyColl = QualifiesForJIT(dtStateJITBlock.Rows(i)("State"))
+
+            If QualifyColl("Qualifies") Then
+
+                ' ___ Adjust appointment effective date to license effective date if license effective date falls after appointment effective date
+                If CDate(QualifyColl("LicEffectiveDate")) > CDate(txtEffectiveDate.Text) Then
+                    ApptEffectiveDate = CDate(QualifyColl("LicEffectiveDate"))
+                Else
+                    ApptEffectiveDate = CDate(txtEffectiveDate.Text)
+                End If
+
+                If txtExpirationDate.Text.Length = 0 Then
+                    ApptExpirationDate = DBNull.Value
+                Else
+                    ApptExpirationDate = CDate(txtExpirationDate.Text)
+                End If
+
+                ' ___ Delete any pending appointment for the enroller in this state for this carrier
+                If CBool(QualifyColl("ApptPendingThisState")) Then
+                    cCommon.ExecuteNonQuery("DELETE UserAppointments WHERE UserID = '" & cSess.UserID & "' AND State = '" & dtStateJITBlock.Rows(i)("State") & "' AND CarrierID = '" & ddCarrierID.SelectedItem.Value & "'")
+                End If
+
+                PerformJustInTimeAppointmentsSaves(dtStateJITBlock.Rows(i)("State"), ApptEffectiveDate, ApptExpirationDate)
+
+            End If
+
+        Next
+    End Sub
+
+    Private Function QualifiesForJIT(ByVal JITState As String) As Collection
+        Dim Coll As New Collection
+        Dim EligibleState As Boolean
+        Dim EnrollerLicensedThisState As Boolean
+        Dim EnrollerCurrentlyAppointed As Boolean
+        Dim DateQualifies As Boolean
+        Dim dtLic As DataTable
+        Dim dtAppt As DataTable
+        Dim NoApptThisState As Boolean
+        Dim ApptPendingThisState As Boolean
+        Dim ApptEffectiveThisState As Boolean
+
+        ' ___ Skip over the current state
+        If JITState <> cSess.State Then
+            EligibleState = True
+        End If
+
+        ' ___ Enroller must be licensed in this state to quality for JIT
+        If EligibleState Then
+            dtLic = cCommon.GetDT("SELECT EffectiveDate FROM UserManagement..UserLicenses WHERE UserID = '" & cSess.UserID & "' AND State = '" & JITState & "'")
+            If dtLic.Rows.Count > 0 AndAlso cCommon.IsBVIDate(dtLic.Rows(0)(0)) Then
+                EnrollerLicensedThisState = True
+            End If
+        End If
+
+        ' ___ Enroller must not already have an appointment in this state for this carrer
+        If EligibleState And Not EnrollerLicensedThisState Then
+            dtAppt = cCommon.GetDT("SELECT EffectiveDate, ExpirationDate FROM UserManagement..UserAppointments WHERE UserID = '" & cSess.UserID & "' AND CarrierID ='" & cSess.CarrierID & "' AND State = '" & JITState & "'")
+            If dtAppt.Rows.Count = 0 Then
+                NoApptThisState = True
+            Else
+                If IsDBNull(dtAppt.Rows(0)("EffectiveDate")) Then
+                    ApptPendingThisState = True
+                Else
+                    ApptEffectiveThisState = True
+                End If
+            End If
+        End If
+
+        If EligibleState And Not EnrollerLicensedThisState And (ApptPendingThisState Or NoApptThisState) Then
+            If CDate(dtAppt.Rows(0)("EffectiveDate")) >= CDate(dtLic.Rows(0)("EffectiveDate")) Then
+                DateQualifies = True
+            End If
+        End If
+
+        Coll.Add(EligibleState And Not EnrollerLicensedThisState And (ApptPendingThisState Or NoApptThisState) And DateQualifies, "Qualifies")
+        Coll.Add(dtLic.Rows(0)("EffectiveDate"), "LicEffectiveDate")
+        Coll.Add(ApptPendingThisState, "ApptPendingThisState")
+        Return Coll
+    End Function
+
+    Private Sub PerformJustInTimeAppointmentsSaves(ByVal State As String, ByVal AppointmentEffectiveDate As Date, ByVal AppointmentExpirationDate As Object)
+        Dim Sql As New System.Text.StringBuilder
+
+        Dim SqlConnection1 As New SqlClient.SqlConnection(cAppSession.GetConnectionString)
+        Dim SqlCmd As System.Data.SqlClient.SqlCommand
+        SqlConnection1.Open()
+        Sql.Append("INSERT INTO UserAppointments (UserID, State, ApplicationDate, EffectiveDate, ExpirationDate, CarrierID, AppointmentNumber, StatusCode, StatusCodeLastChangeDate, AddDate, ChangeDate)")
+        Sql.Append(" Values ")
+        Sql.Append("(" & cCommon.StrOutHandler(cSess.UserID, False, True) & ", ")
+        Sql.Append(cCommon.StrOutHandler(State, False, True) & ", ")
+        Sql.Append(cCommon.DateOutHandler(txtApplicationDate.Text, True, True) & ", ")
+        Sql.Append(cCommon.DateOutHandler(AppointmentEffectiveDate, True, True) & ", ")
+        Sql.Append(cCommon.DateOutHandler(AppointmentExpirationDate, True, True) & ", ")
+        Sql.Append(cCommon.StrOutHandler(ddCarrierID.SelectedItem.Value, False, True) & ", ")
+        Sql.Append(cCommon.StrOutHandler(txtAppointmentNumber.Text, False, True) & ", ")
+        Sql.Append("'X', ")
+        Sql.Append("'" & cCommon.GetServerDateTime & "', ")
+        Sql.Append("'" & cCommon.GetServerDateTime & "', ")
+        Sql.Append("'" & cCommon.GetServerDateTime & "') ")
+        SqlCmd = New System.Data.SqlClient.SqlCommand(Sql.ToString, SqlConnection1)
+        SqlCmd.CommandType = System.Data.CommandType.Text
+        SqlCmd.ExecuteNonQuery()
+        SqlCmd.Dispose()
+        SqlConnection1.Close()
+    End Sub
+
+    Private Function IsJITTrigger() As Boolean
+        Dim dt As DataTable
+        Dim ResidentState As String
+        Dim JITTrigger As Boolean
+
+        ' ___ Does this appointment occur in the appointee's resident state?
+        dt = cCommon.GetDT("SELECT ResidentState FROM UserManagement..Users WHERE UserID = '" & cSess.UserID & "'")
+        ResidentState = dt.Rows(0)(0)
+        If ResidentState = cSess.StateDropdown Then
+
+            ' ___ Is this carrier a JIT carrier in this state?
+            dt = cCommon.GetDT("SELECT Count (*) FROM UserManagement..JIT_Carrier_State WHERE CarrierID = '" & cSess.CarrierID & "' AND State = '" & cSess.StateDropdown)
+            If dt.Rows(0)(0) > 0 Then
+                JITTrigger = True
+            End If
+
+        End If
+
+        Return JITTrigger
+    End Function
+End Class

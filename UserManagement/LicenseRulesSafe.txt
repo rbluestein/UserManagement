@@ -1,0 +1,174 @@
+    Private Sub Val_DateSequenceCheck(ByRef ErrColl As Collection, ByRef OKToProceed As Boolean)
+        If txtEffectiveDate.Text.Length > 0 AndAlso txtExpirationDate.Text.Length > 0 Then
+            If CType(txtEffectiveDate.Text, Date) > CType(txtExpirationDate.Text, Date) Then
+                cCommon.ValidateErrorOnly(ErrColl, "the effective date of the license falls after the expiration date of the license")
+                OKToProceed = False
+            End If
+        End If
+
+        If txtEffectiveDate.Text.Length = 0 AndAlso txtExpirationDate.Text.Length > 0 Then
+            cCommon.ValidateErrorOnly(ErrColl, "cannot have expiration date without effective date")
+            OKToProceed = False
+        End If
+    End Sub
+
+    Private Sub Val_KeyViolationCheck(ByRef RequestAction As RequestAction, ByRef ErrColl As Collection, ByRef OKToProceed As Boolean)
+        Dim dt As DataTable
+
+        If RequestAction = RequestAction.SaveNew And OKToProceed Then
+            dt = cCommon.GetDT("SELECT Count (*) From UserLicenses WHERE UserID = '" & cSess.UserID & "' AND State = '" & ddState.SelectedItem.Value & "'")
+            If dt.Rows(0)(0) > 0 Then
+                cCommon.ValidateErrorOnly(ErrColl, "a license already exists for this enroller in this state")
+                OKToProceed = False
+            End If
+        End If
+    End Sub
+
+    Private Sub Val_OrphanCheck(ByRef RequestAction As RequestAction, ByRef ErrColl As Collection, ByRef OKToProceed As Boolean)
+        Dim i As Integer
+        Dim ApptIsCovered As Boolean
+        Dim ApptNum As Integer
+        Dim SubjLicNum As Integer
+        Dim ApptEffDate As Date
+        Dim ApptExpDate As Date
+        Dim dtLic As DataTable
+        Dim dtAppt As DataTable
+        Dim ApptExpires As Boolean
+        Dim ApptIsPending As Boolean
+        Dim ApptIsActual As Boolean
+        Dim ApptState As String
+
+        If RequestAction = RequestAction.SaveExisting And OKToProceed Then
+
+            ' ___ Get the current license and appointment records for this user for the state.
+            dtLic = cCommon.GetDT("SELECT EffectiveDate, ExpirationDate, LicenseNumber, State From UserLicenses WHERE UserID = '" & cSess.UserID & "' AND State = '" & cSess.State & "'")
+            dtAppt = cCommon.GetDT("SELECT EffectiveDate, ExpirationDate From UserAppointments WHERE UserID = '" & cSess.UserID & "' AND State = '" & cSess.State & "'")
+
+            ' ___ Identify the subject license record
+            For i = 0 To dtLic.Rows.Count - 1
+                If dtLic.Rows(i)("LicenseNumber") = cSess.LicenseNumber Then
+                    SubjLicNum = i
+                    Exit For
+                End If
+            Next
+
+            If dtAppt.Rows.Count > 0 Then
+                For ApptNum = 0 To dtAppt.Rows.Count - 1
+                    ApptIsCovered = False
+                    ApptExpDate = Nothing
+                    ApptExpires = False
+
+                    ApptState = cSess.State
+                    If Not cCommon.IsBVIDate(dtAppt.Rows(ApptNum)("EffectiveDate")) Then
+                        ApptIsPending = True
+                    Else
+                        ApptIsActual = True
+                        ApptEffDate = dtAppt.Rows(ApptNum)("EffectiveDate")
+                    End If
+
+                    If cCommon.IsBVIDate(dtAppt.Rows(ApptNum)("ExpirationDate")) Then
+                        ApptExpires = True
+                        ApptExpDate = dtAppt.Rows(ApptNum)("ExpirationDate")
+                    End If
+
+                    ApptIsCovered = Val_IsThisAppointmentCovered(ApptNum, dtLic, SubjLicNum, ApptIsPending, ApptIsActual, ApptEffDate, ApptExpDate, ApptExpires, ApptState)
+
+                    If Not ApptIsCovered Then
+                        Exit For
+                    End If
+                Next
+                If Not ApptIsCovered Then
+                    cCommon.ValidateErrorOnly(ErrColl, "this edit will cause one or more appointments to lose license coverage")
+                End If
+            End If
+        End If
+    End Sub
+
+    Private Function Val_IsThisAppointmentCovered(ByVal ApptNum As Boolean, ByRef dtLic As DataTable, ByVal SubjLicNum As Integer, ByVal ApptIsPending As Boolean, ByVal ApptIsActual As Boolean, ByVal ApptEffDate As Date, ByVal ApptExpDate As Date, ByVal ApptExpires As Boolean, ByVal ApptState As String) As Boolean
+        Dim ApptIsCovered As Boolean
+        Dim LicNum As Integer
+        Dim LicEffDate As Date
+        Dim LicExpDate As Date
+        Dim LicState As String
+        Dim LicExpires As Boolean
+        Dim LicIsApplication As Boolean
+        Dim LicIsEffective As Boolean
+        Dim Sql As String
+        Dim dt As DataTable
+
+        ' ___ Loop through all of the state licenses to determine whether one covers this appointment.
+        For LicNum = 0 To dtLic.Rows.Count - 1
+            LicState = cSess.State
+            LicExpires = False
+            LicExpDate = Nothing
+
+            ' ___ Is license an application or is it effective?
+            If Not cCommon.IsBVIDate(dtLic.Rows(LicNum)("EffectiveDate")) Then
+                LicIsApplication = True
+            Else
+                LicIsEffective = True
+                LicEffDate = dtLic.Rows(LicNum)("EffectiveDate")
+            End If
+
+            ' ___ Does the license have an expiration date?
+            If cCommon.IsBVIDate(dtLic.Rows(LicNum)("ExpirationDate")) Then
+                LicExpires = True
+                LicExpDate = dtLic.Rows(LicNum)("ExpirationDate")
+            End If
+
+            ' ___ Overwrite with control values for subject license.
+            If LicNum = SubjLicNum Then
+                LicState = ddState.SelectedItem.Value
+                If txtEffectiveDate.Text.Length = 0 Then
+                    LicIsApplication = True
+                Else
+                    LicIsEffective = True
+                    LicEffDate = CDate(txtEffectiveDate.Text)
+                End If
+
+                If txtExpirationDate.Text.Length > 0 Then
+                    LicExpires = True
+                    LicExpDate = CDate(txtExpirationDate.Text)
+                Else
+                    LicExpires = False
+                    LicExpDate = Nothing
+                End If
+            End If
+
+            If ApptIsPending Then
+
+                ' ___ A pending appointment is required to have a pending or actual license in this state.
+                If ApptState = LicState Then
+                    ApptIsCovered = True
+                    Exit For
+                End If
+
+            ElseIf ApptIsActual AndAlso LicIsEffective And LicState = cSess.State Then
+
+                ' ___ An actual appointment must be tested against an actual license and must pass one of the four tests based on effective and expiration dates.
+                If LicExpires And ApptExpires Then
+                    If (ApptEffDate >= LicEffDate) AndAlso (ApptExpDate >= LicEffDate AndAlso ApptExpDate <= LicExpDate) Then
+                        ApptIsCovered = True
+                        Exit For
+                    End If
+                ElseIf LicExpires And (Not ApptExpires) Then
+                    If (ApptEffDate >= LicEffDate) AndAlso (ApptEffDate <= LicExpDate) Then
+                        ApptIsCovered = True
+                        Exit For
+                    End If
+                ElseIf (Not LicExpires) And ApptExpires Then
+                    If (ApptEffDate >= LicEffDate) Then
+                        ApptIsCovered = True
+                        Exit For
+                    End If
+                ElseIf (Not LicExpires) And (Not ApptExpires) Then
+                    If (ApptEffDate >= LicEffDate) Then
+                        ApptIsCovered = True
+                        Exit For
+                    End If
+                End If
+            End If
+        Next
+
+        Return ApptIsCovered
+    End Function

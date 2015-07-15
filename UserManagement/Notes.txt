@@ -1,0 +1,18 @@
+// Get this machine's name.
+thisMachineName = System.Environment.MachineName.ToUpper();
+
+// Get production machine name from web.config.
+machineNameSetting = ConfigurationSettings.AppSettings["machine_name_remote"];
+
+// Was the production machine found?
+if (thisMachineName == machineNameSetting)
+{
+    // Load "remote/live/production" settings.
+    index = "_remote";
+    devMachineFound = true;
+}
+else
+{
+    // Load developer settings...
+    // (see demo project)
+}
