@@ -1,0 +1,1 @@
+[7/15/2015 5:08:11 PM rbluestein] Error #109: Index ClearDownloads. Could not find a part of the path 'C:\Github\UserManagement\UserManagement_2008\UserManagement\TempData'. ** ERROR FORCING APPLICATION SHUTDOWN **

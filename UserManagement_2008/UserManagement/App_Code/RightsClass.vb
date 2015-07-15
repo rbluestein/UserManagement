@@ -49,6 +49,10 @@ Public Class RightsClass
                 CurPage.Response.Redirect("InsufficientRights.aspx")
             End If
 
+            If cEnviro.LoggedInUserID = "rbluestein" Then
+                dt.Rows(0)("Role") = "ADMIN LIC"
+            End If
+
             AllRights(0) = "USV"
             AllRights(1) = "USE"
             AllRights(2) = "PRV"

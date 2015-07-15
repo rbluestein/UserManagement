@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "UserManagement", "D:\LiveApps\UserManagement_2008\UserManagement\", "{B158CCCA-E036-479A-B019-E278258F86C0}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "UserManagement", ".", "{B158CCCA-E036-479A-B019-E278258F86C0}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFramework = "3.5"
 		Debug.AspNetCompiler.VirtualPath = "/UserManagement"
