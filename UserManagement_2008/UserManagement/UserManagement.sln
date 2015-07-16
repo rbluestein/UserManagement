@@ -1,36 +1,12 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "UserManagement", ".", "{B158CCCA-E036-479A-B019-E278258F86C0}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFramework = "3.5"
-		Debug.AspNetCompiler.VirtualPath = "/UserManagement"
-		Debug.AspNetCompiler.PhysicalPath = "..\UserManagement\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\UserManagement\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/UserManagement"
-		Release.AspNetCompiler.PhysicalPath = "..\UserManagement\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\UserManagement\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "61074"
-		DefaultWebSiteLanguage = "Visual Basic"
-	EndProjectSection
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|.NET = Debug|.NET
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B158CCCA-E036-479A-B019-E278258F86C0}.Debug|.NET.ActiveCfg = Debug|.NET
-		{B158CCCA-E036-479A-B019-E278258F86C0}.Debug|.NET.Build.0 = Debug|.NET
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-EndGlobal
+﻿document.getElementById("").value = 
+document.getElementById("")
+document.getElementById("hdAction").value = 
+
+
+document.getElementById("hdLoggedInUserID")
+
+document.getElementById("hdAction").value = "Sort"
+document.getElementById("hdAction").value = "Sort"
+
+document.getElementById("hdSortField").value = vField
+document.getElementByIdhdFilterShowHideToggle= 1

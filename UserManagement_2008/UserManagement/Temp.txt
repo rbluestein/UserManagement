@@ -1,0 +1,17 @@
+﻿document.getElementById("").value = 
+document.getElementById("")
+document.getElementById("hdAction").value = 
+
+document.getElementById("hdFilterShowHideToggle").value = 1
+
+
+document.getElementById("hdLoggedInUserID")
+
+document.getElementById("hdAction").value = "Sort"
+document.getElementById("hdAction").value = "ApplyFilter"
+document.getElementById("hdAction").value = "ExistingRecord"
+document.getElementById("hdAction").value = "Permissions"
+
+document.getElementById("hdSortField").value = vField
+
+document.getElementById("hdUserID").value = vUserID

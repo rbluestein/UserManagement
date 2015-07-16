@@ -67,52 +67,52 @@
 			<asp:literal id="litMsg" runat="server" EnableViewState="False"></asp:literal><asp:literal id="litFilterHiddens" runat="server" EnableViewState="False"></asp:literal>
 			<script type="text/javascript"> 
 			function Sort(vField) {
-				form1.hdAction.value = "Sort"
-				form1.hdSortField.value = vField
+			    document.getElementById("hdAction").value = "Sort"
+			    document.getElementById("hdSortField").value = vField
 				form1.submit()
 			}
 	
 			function ToggleShowFilter()  {
-				form1.hdFilterShowHideToggle.value = 1
-				form1.hdAction.value = "ApplyFilter"
+			    document.getElementById("hdFilterShowHideToggle").value = 1
+			    document.getElementById("hdAction").value = "ApplyFilter"
 				form1.submit()
 			}				
 	
 			function ApplyFilter()
-			{		
-				form1.hdAction.value = "ApplyFilter"
+			{
+			    document.getElementById("hdAction").value = "ApplyFilter"
 				form1.submit()				
 			}
 			
 			function Update(vUserID)
 			{
-				form1.hdAction.value = "Update"
-				form1.hdUserID.value = vUserID
+			    document.getElementById("hdAction").value = "Update"
+			    document.getElementById("hdUserID").value = vUserID
 				form1.submit()
 			}									 						
 						
 			function ExistingRecord(vUserID)
 			{
-				form1.hdAction.value = "ExistingRecord"
-				form1.hdUserID.value = vUserID
+			    document.getElementById("hdAction").value = "ExistingRecord"
+			    document.getElementById("hdUserID").value = vUserID
 				form1.submit()
 			}
 			
 			function NewRecord() {
-				form1.hdAction.value = "NewRecord"
+			    document.getElementById("hdAction").value = "NewRecord"
 				form1.submit()
 			}	
 				
 
 			function SubmitOnEnterKey(e) {
 				var keypressevent = e ? e : window.event
-				if (keypressevent.keyCode == 13) {	
-					form1.hdAction.value = "ApplyFilter"						 	
+				if (keypressevent.keyCode == 13) {
+				    document.getElementById("hdAction").value = "ApplyFilter"						 	
 					form1.submit()
 				}			
 			}		
 			function ReturnToParentPage()  {
-				form1.hdAction.value = "return"
+			    document.getElementById("hdAction").value = "return"
 				form1.submit()
 			}				
 																									

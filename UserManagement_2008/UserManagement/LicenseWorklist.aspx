@@ -55,96 +55,85 @@
 			<asp:literal id="litMsg" runat="server" EnableViewState="False"></asp:literal><asp:literal id="litFilterHiddens" runat="server" EnableViewState="False"></asp:literal>
 			<script type="text/javascript"> 
 			function Sort(vField) {
-				form1.hdAction.value = "Sort"
-				form1.hdSortField.value = vField
+			    document.getElementById("hdAction").value = "Sort"
+			    document.getElementById("hdSortField").value = vField
 				form1.submit()
 			}
 	
 			function ToggleShowFilter()  {
-				form1.hdFilterShowHideToggle.value = 1
-				form1.hdAction.value = "ApplyFilter"
+			    document.getElementById("hdFilterShowHideToggle").value = 1
+				document.getElementById("hdAction").value = "ApplyFilter"
 				form1.submit()
 			}				
 	
 			function ApplyFilter()
-			{		
-				form1.hdAction.value = "ApplyFilter"
+			{
+			    document.getElementById("hdAction").value = "ApplyFilter"
 				form1.submit()				
 			}
 			
 			function Update(vUserID)
 			{
-				form1.hdAction.value = "update"
-				form1.hdUserID.value = vUserID
-				form1.submit()
+			    document.getElementById("hdAction").value = "update"
+			    document.getElementById("hdUserID").value = vUserID
+			    form1.submit()
 			}									 						
 						
 			function ExistingLicense(vState, vLicenseNumber, vEffectiveDate)
 			{
-				form1.hdAction.value = "ExistingLicense"
-				form1.hdState.value = vState
-				form1.hdLicenseNumber.value = vLicenseNumber
-				form1.hdEffectiveDate.value = vEffectiveDate
+			    document.getElementById("hdAction").value = "ExistingLicense"
+				document.getElementById("hdState").value = vState
+				document.getElementById("hdLicenseNumber").value = vLicenseNumber
+				document.getElementById("hdEffectiveDate").value = vEffectiveDate
 				form1.submit()
 			}
 			
 			function NewLicense() {
-				form1.hdAction.value = "NewLicense"
+			    document.getElementById("hdAction").value = "NewLicense"
 				form1.submit()
 			}	
 			
 			function NewAppointment(vState) {
-				form1.hdState.value = vState
-				form1.hdAction.value = "NewAppointment"
+			    document.getElementById("hdState").value = vState
+				document.getElementById("hdAction").value = "NewAppointment"
 				form1.submit()
 			}	
 			
 			function ExistingAppointment(vState, vCarrierID, vEffectiveDate, vAppointmentNumber) {
-				form1.hdState.value = vState
-				form1.hdCarrierID.value = vCarrierID
-				form1.hdEffectiveDate.value = vEffectiveDate
-				form1.hdAppointmentNumber.value = vAppointmentNumber			
-				form1.hdAction.value = "ExistingAppointment"
+			    document.getElementById("hdState").value = vState
+			    document.getElementById("hdCarrierID").value = vCarrierID
+				document.getElementById("hdEffectiveDate").value = vEffectiveDate
+				document.getElementById("hdAppointmentNumber").value = vAppointmentNumber
+				document.getElementById("hdAction").value = "ExistingAppointment"
 				form1.submit()
 			}							
 			
 			function SubmitOnEnterKey(e) {
 				var keypressevent = e ? e : window.event
-				if (keypressevent.keyCode == 13) {	
-					form1.hdAction.value = "ApplyFilter"						 	
+				if (keypressevent.keyCode == 13) {
+				    document.getElementById("hdAction").value = "ApplyFilter"		 	
 					form1.submit()
 				}			
 			}		
 			function ReturnToParentPage()  {
-				form1.hdAction.value = "return"
+			    document.getElementById("hdAction").value = "return"
 				form1.submit()
 			}								
 			
 			function ShowHideSubTable(vSubTableInd, vSubTableState)  {
-				form1.hdSubTableInd.value = vSubTableInd
-				form1.hdSubTableState.value = vSubTableState
-				form1.hdAction.value = "ShowHideSubTable"
+			    document.getElementById("hdSubTableInd").value = vSubTableInd
+				document.getElementById("hdSubTableState").value = vSubTableState
+				document.getElementById("hdAction").value = "ShowHideSubTable"
 				form1.submit()
 			}				
-	
-	/*	
-			function ShowHideSubTable(vSubTableInd, vSubTableState, vLicenseNumber, vEffectiveDate)  {
-				form1.hdSubTableInd.value = vSubTableInd
-				form1.hdSubTableState.value = vSubTableState
-				form1.hdLicenseNumber.value = vLicenseNumber
-				form1.hdEffectiveDate.value = vEffectiveDate
-				form1.hdAction.value = "ShowHideSubTable"
-				form1.submit()
-			}	
-	
-	*/		
+		
 			function DeleteLic(vState, vLicenseNumber, vEffectiveDate)  {
 				var OKToDelete = confirm("Deleting this license deletes the license and any appointments associated with this license. Do you wish to proceed with the deletion?");
 				if (OKToDelete == true) {
-					form1.hdAction.value = "DeleteLic"
-					form1.hdState.value = vState
-					form1.hdLicenseNumber.value = vLicenseNumber
-					form1.hdEffectiveDate.value = vEffectiveDate					
+				    document.getElementById("hdAction").value = "DeleteLic"
+				    document.getElementById("hdState").value = vState
+				    document.getElementById("hdLicenseNumber").value = vLicenseNumber
+					document.getElementById("hdEffectiveDate").value = vEffectiveDate
 					form1.submit()		
 				}		
 			}
@@ -152,11 +141,11 @@
 			function DeleteAppt(vState, vCarrierID, vEffectiveDate, vAppointmentNumber)  {
 				var OKToDelete = confirm("Are you sure you wish to delete this appointment?");
 				if (OKToDelete == true) {
-					form1.hdAction.value = "DeleteAppt"
-					form1.hdState.value = vState
-					form1.hdCarrierID.value = vCarrierID
-					form1.hdEffectiveDate.value = vEffectiveDate	
-					form1.hdAppointmentNumber.value = vAppointmentNumber								
+				    document.getElementById("hdAction").value = "DeleteAppt"
+				    document.getElementById("hdState").value = vState
+				    document.getElementById("hdCarrierID").value = vCarrierID
+					document.getElementById("hdEffectiveDate").value = vEffectiveDate
+					document.getElementById("hdAppointmentNumber").value = vAppointmentNumber							
 					form1.submit()		
 				}		
 			}								

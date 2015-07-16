@@ -14,7 +14,7 @@
 	</head>
 	<body>
 		<form id="form1" name="form1" runat="server">
-			<input type="hidden" name="hdAction" /> <input type="hidden" name="hdSortField" /> <input type="hidden" name="hdCarrierID" />
+			<input type="hidden" id="hdAction" name="hdAction" /> <input type="hidden" name="hdSortField" /> <input type="hidden" name="hdCarrierID" />
 			<input type='hidden' name='hdFilterShowHideToggle' id='hdFilterShowHideToggle' value='0' />
 			<table class="PrimaryTbl" style="LEFT: 140px; POSITION: absolute; TOP: 14px" cellspacing="0" cellpadding="0" width="650" border="0">
 				<tr style="DISPLAY: none">
@@ -43,30 +43,30 @@
 				new menu (MENU_ITEMS, MENU_TPL);				
 			</script>
 			<asp:literal id="litMsg" runat="server" EnableViewState="False"></asp:literal><asp:literal id="litFilterHiddens" runat="server" EnableViewState="False"></asp:literal>
-			<script language="javascript"> 			
+			<script type="text/javascript"> 			
 
 			function Sort(vField) {
-				form1.hdAction.value = "Sort"
-				form1.hdSortField.value = vField
+			    document.getElementById("hdAction").value = "Sort"
+			    document.getElementById("hdSortField").value = vField
 				form1.submit()
 			}
 	
 			function ToggleShowFilter()  {
-				form1.hdFilterShowHideToggle.value = 1
-				form1.hdAction.value = "ApplyFilter"
+			    document.getElementById("hdFilterShowHideToggle").value = 1
+				document.getElementById("hdAction").value = "ApplyFilter"
 				form1.submit()
 			}				
 	
 			function ApplyFilter()
-			{		
-				form1.hdAction.value = "ApplyFilter"
+			{
+			    document.getElementById("hdAction").value = "ApplyFilter"
 				form1.submit()				
 			}						 						
 						
 			function ExistingRecord(vCarrierID)
 			{
-				form1.hdAction.value = "ExistingRecord"
-				form1.hdCarrierID.value = vCarrierID
+			    document.getElementById("hdAction").value = "ExistingRecord"
+			    document.getElementById("hdCarrierID").value = vCarrierID
 				form1.submit()
 			}
 			
@@ -74,28 +74,28 @@
 				vCarrierID = vCarrierID.replace("~", "'");
 				var OKToDelete = confirm("Are you sure you wish to delete " + vCarrierID + "?");
 				if (OKToDelete == true) {
-					form1.hdAction.value = "Delete"
-					form1.hdCarrierID.value = vCarrierID
+				    document.getElementById("hdAction").value = "Delete"
+				    document.getElementById("hdCarrierID").value = vCarrierID			    
 					form1.submit()		
 				}		
 			}	
 			
 			function License(vCarrierID)
 			{
-				form1.hdAction.value = "License"
-				form1.hdCarrierID.value = vCarrierID
+			    document.getElementById("hdAction").value = "License"
+			    document.getElementById("hdCarrierID").value = vCarrierID
 				form1.submit()
 			}						
 			
 			function NewRecord() {
-				form1.hdAction.value = "NewRecord"
+			    document.getElementById("hdAction").value = "NewRecord"
 				form1.submit()
 			}				
 
 			function SubmitOnEnterKey(e) {
 				var keypressevent = e ? e : window.event
-				if (keypressevent.keyCode == 13) {	
-					form1.hdAction.value = "ApplyFilter"						 	
+				if (keypressevent.keyCode == 13) {
+				    document.getElementById("hdAction").value = "ApplyFilter"					 	
 					form1.submit()
 				}			
 			}		

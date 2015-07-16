@@ -13,7 +13,7 @@
 	</head>	
 	<body>
 		<form id="form1" name="form1" runat="server">
-			<input type="hidden" name="hdAction" /> <input type="hidden" name="hdSortField" /> <input type="hidden" name="hdClientID" />
+			<input type="hidden" id="hdAction" name="hdAction" /> <input type="hidden" name="hdSortField" /> <input type="hidden" name="hdClientID" />
 			<input type='hidden' name='hdFilterShowHideToggle' id='hdFilterShowHideToggle' value='0' />
 			<table class="PrimaryTbl" style="LEFT: 140px; POSITION: absolute; TOP: 14px" cellspacing="0"
 				cellpadding="0" width="650" border="0">
@@ -46,27 +46,27 @@
 			<script type="text/javascript"> 			
 
 			function Sort(vField) {
-				form1.hdAction.value = "Sort"
-				form1.hdSortField.value = vField
+				document.getElementById("hdAction").value = "Sort"
+				document.getElementById("hdSortField").value = vField
 				form1.submit()
 			}
 	
 			function ToggleShowFilter()  {
-				form1.hdFilterShowHideToggle.value = 1
-				form1.hdAction.value = "ApplyFilter"
+				document.getElementById("hdFilterShowHideToggle").value = 1
+				document.getElementById("hdAction").value = "ApplyFilter"
 				form1.submit()
 			}				
 	
 			function ApplyFilter()
-			{		
-				form1.hdAction.value = "ApplyFilter"
-				form1.submit()				
+			{
+			    document.getElementById("hdAction").value = "ApplyFilter"
+			    form1.submit()				
 			}						 						
 						
 			function ExistingRecord(vClientID)
 			{
-				form1.hdAction.value = "ExistingRecord"
-				form1.hdClientID.value = vClientID
+				document.getElementById("hdAction").value = "ExistingRecord"
+				document.getElementById("hdClientID").value = vClientID
 				form1.submit()
 			}
 			
@@ -74,30 +74,21 @@
 				vClientID = vClientID.replace("~", "'");
 				var OKToDelete = confirm("Are you sure you wish to delete " + vClientID + "?");
 				if (OKToDelete == true) {
-					form1.hdAction.value = "Delete"
-					form1.hdClientID.value = vClientID
+					document.getElementById("hdAction").value = "Delete"
+					document.getElementById("hdClientID").value = vClientID
 					form1.submit()		
 				}		
 			}	
-			
-			/*
-			function License(vClientID)
-			{
-				form1.hdAction.value = "License"
-				form1.hdClientID.value = vClientID
-				form1.submit()
-			}
-			*/						
-			
+												
 			function NewRecord() {
-				form1.hdAction.value = "NewRecord"
+			    document.getElementById("hdAction").value = "NewRecord"
 				form1.submit()
 			}				
 
 			function SubmitOnEnterKey(e) {
 				var keypressevent = e ? e : window.event
-				if (keypressevent.keyCode == 13) {	
-					form1.hdAction.value = "ApplyFilter"						 	
+				if (keypressevent.keyCode == 13) {
+				    document.getElementById("hdAction").value = "ApplyFilter"			 	
 					form1.submit()
 				}			
 			}		

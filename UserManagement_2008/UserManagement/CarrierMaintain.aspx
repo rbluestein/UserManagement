@@ -17,7 +17,7 @@
 	</head>
 	<body>
 		<form id="form1" name="form1" action="CarrierMaintain.aspx" method="post" runat="server">
-			<input type="hidden" name="hdAction" /><input id="hdConfirm" type="hidden" name="hdConfirm" />
+			<input type="hidden" id="hdAction" name="hdAction" /><input id="hdConfirm" type="hidden" name="hdConfirm" />
 			<script type="text/javascript">
 			//	function GetUserConfirmation()  {
 			//		var OKToChange = confirm("There are users currently associated with this Carrier ID. If you proceed with this change in Carrier ID, these users will be updated to the new Carrier ID value. Do you wish to proceed with this change?");
@@ -87,12 +87,13 @@
 				}
 			}
 			function Update()  {
-				form1.hdAction.value = "update"
+			    document.getElementById("hdAction").value = "update"
+				
 				form1.submit()
 			}
 			
 			function ReturnToParentPage()  {
-				form1.hdAction.value = "return"
+			    document.getElementById("hdAction").value = "return"
 				form1.submit()
 			}
 			

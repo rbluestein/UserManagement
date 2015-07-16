@@ -16,7 +16,7 @@
 <body>
     <form id="form1" runat="server">
     <div>
-			<input type="hidden" name="hdAction" /><input type="hidden" name="hdSubAction" />
+			<input type="hidden" id="hdAction" name="hdAction" /><input type="hidden" name="hdSubAction" />
 			<asp:literal id="litHiddens" runat="server" enableviewstate="False"></asp:literal>  
 
 			<table class="PrimaryTbl" style="LEFT: 140px; POSITION: absolute; TOP: 14px" cellspacing="0"

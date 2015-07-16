@@ -15,7 +15,7 @@
 	</head>
 	<body>
 		<form id="form1" runat="server">
-			<input type="hidden" name="hdAction"/><input type="hidden" name="hdSubAction"/>
+			<input type="hidden" id="hdAction" name="hdAction"/><input type="hidden" name="hdSubAction"/>
 			<asp:literal id="litHiddens" runat="server" enableviewstate="False"></asp:literal>
 			<table class="PrimaryTbl" style="LEFT: 140px; POSITION: absolute; TOP: 14px" cellspacing="0"
 				cellpadding="0" width="650" border="0">
@@ -114,12 +114,12 @@
 				}
 			}
 			function Update()  {
-				form1.hdAction.value = "update"
+				document.getElementById("hdAction").value = "update"
 				form1.submit()
 			}
 			
 			function ReturnToParentPage()  {
-				form1.hdAction.value = "return"
+			    document.getElementById("hdAction").value = "return"
 				form1.submit()
 			}
 			
@@ -141,7 +141,7 @@
 			}		
 			
 			function ChangeYear(vIn)  {
-				form1.hdAction.value = vIn
+			    document.getElementById("hdAction").value = vIn
 				form1.submit()
 			}
 			

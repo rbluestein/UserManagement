@@ -99,15 +99,16 @@
 					var obj_caller = (window.opener ? window.opener.monthpickers[num_id] : null);
 					
 					var ARR_MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];		
-					var ShowDate =  String(ARR_MONTHS[form1.hdFromMonth.value]) + '&nbsp;' + String(form1.hdFromYear.value)	
+					//var ShowDate =  String(ARR_MONTHS[form1.hdFromMonth.value]) + '&nbsp;' + String(form1.hdFromYear.value)
+					var ShowDate = String(ARR_MONTHS[document.getElementById("hdFromMonth.value")]) + '&nbsp;' + String(document.getElementById("hdFromYear").value)	
 							
-					if (form1.hdInitial.value == 1)  {	
-						var ArrValues = obj_caller.target.value.split("|")						
-						form1.hdFromMonth.value = ArrValues[0]			
-						form1.hdFromYear.value = ArrValues[1]	
-						form1.hdToMonth.value = ArrValues[2]	
-						form1.hdToYear.value = ArrValues[3]												
-						form1.hdInitial.value = "0"
+					if (docment.getElementById("hdInitial").value == 1)  {	
+						var ArrValues = obj_caller.target.value.split("|")
+						document.getElementById("hdFromMonth").value = ArrValues[0]
+						document.getElementById("hdFromYear").value = ArrValues[1]
+						document.getElementById("hdToMonth").value = ArrValues[2]
+						document.getElementById("hdToYear").value = ArrValues[3]
+						document.getElementById("hdInitial").value = "0"
 					}						
 						
 					fnShowDate(0)
@@ -125,10 +126,10 @@
 												
 					function fnSelectMonth(vSelect, vValue)  {
 						fnAdjustYear(vSelect)			
-						if (vSelect == 0)  {				
-							form1.hdFromMonth.value = vValue
+						if (vSelect == 0)  {
+							document.getElementById("hdFromMonth").value = vValue
 						} else {
-							form1.hdToMonth.value = vValue				
+							document.getElementById("hdToMonth").value = vValue	
 						}			
 						fnShowDate(vSelect)
 						//fnSetSourceControl()
@@ -136,18 +137,20 @@
 								
 					function fnSelectYear(vSelect, vValue)  {
 						fnAdjustMonth(vSelect)				
-						if (vSelect == 0) {	
-							if (form1.hdFromYear.value == '')  {
+						if (vSelect == 0) {
+						    if (document.getElementById("hdFromYear").value == '') {
 								fnAdjustYear(0)			
 							}  else {
-								form1.hdFromYear.value = parseInt(form1.hdFromYear.value) + vValue										
+							    //form1.hdFromYear.value = parseInt(form1.hdFromYear.value) + vValue
+							    document.getElementById("hdFromYear").value = parseInt(document.getElementById("hdFromYear").value) + vValue								
 							}				
 						}	
 						if (vSelect == 1) {	
-							if (form1.hdToYear.value == '')  {
+							if (document.getElementById("hdToYear").value == '')  {
 								fnAdjustYear(1)			
 							}  else {
-								form1.hdToYear.value = parseInt(form1.hdToYear.value) + vValue										
+							    //form1.hdToYear.value = parseInt(form1.hdToYear.value) + vValue
+							    document.getElementById("hdToYear").value = parseInt(document.getElementById("hdToYear").value) + vValue																	
 							}			
 						}						
 						fnShowDate(vSelect)					
@@ -157,18 +160,20 @@
 					function fnShowDate(vSelect) 
 					{
 						if (vSelect == 0) {
-							if (form1.hdFromMonth.value == "" && form1.hdFromYear.value == "") {
-								form1.txtFromMonthYear.value = ""
+						    //if (form1.hdFromMonth.value == "" && form1.hdFromYear.value == "") {
+							if (document.getElementById("hdFromMonth").value == "" && document.getElementById("hdFromYear").value == "") {
+								document.getElementById("txtFromMonthYear").value = ""
 							} else {
-								form1.txtFromMonthYear.value  = ARR_MONTHS[form1.hdFromMonth.value] + ' ' + form1.hdFromYear.value	
+							    //form1.txtFromMonthYear.value  = ARR_MONTHS[form1.hdFromMonth.value] + ' ' + form1.hdFromYear.value
+							    document.getElementById("txtFromMonthYear").value = ARR_MONTHS[document.getElementById("hdFromMonth").value] + ' ' + document.getElementById("hdFromYear").value	
 							}
 						}
 						
 						if (vSelect == 1) {
-							if (form1.hdToMonth.value == "" && form1.hdToYear.value == "") {
-								form1.txtToMonthYear.value = ""
+							if (document.getElementById("hdToMonth").value == "" && document.getElementById("hdToYear").value == "") {
+								document.getElementById("txtToMonthYear").value = ""
 							} else {
-								form1.txtToMonthYear.value  = ARR_MONTHS[form1.hdToMonth.value] + ' ' + form1.hdToYear.value	
+								document.getElementById("txtToMonthYear").value  = ARR_MONTHS[document.getElementById("hdToMonth").value] + ' ' + document.getElementById("hdToYear").value	
 							}
 						}					
 					
@@ -176,38 +181,38 @@
 					
 					function fnClear(vSelect)  {
 						if (vSelect == 0)  {		
-							form1.hdFromMonth.value = ''
-							form1.hdFromYear.value = ''				
+							document.getElementById("hdFromMonth").value = '' 
+							document.getElementById("hdFromYear").value = ''	
 						} else {		
-							form1.hdToMonth.value = ''
-							form1.hdToYear.value = ''	
+							document.getElementById("hdToMonth").value = ''
+							document.getElementById("hdToYear").value = ''
 						}
 						fnShowDate(vSelect)					
 						//fnSetSourceControl()		
 					}	
 					
 					function fnAdjustMonth(vSelect) 	{
-						if (vSelect == 0  && form1.hdFromMonth.value == "")	{
-							form1.hdFromMonth.value = 0
+						if (vSelect == 0  && document.getElementById("hdFromMonth").value == "")	{
+						    document.getElementById("hdFromMonth").value = 0
 						} 
-						if (vSelect == 1 && form1.hdToMonth.value == '')	{
-							form1.hdToMonth.value = 0
+						if (vSelect == 1 && document.getElementById("hdToMonth").value == '')	{
+							document.getElementById("hdToMonth").value = 0
 						}												
 					}
 					
 					function fnAdjustYear(vSelect)  {
-						if (vSelect == 0 && form1.hdFromYear.value == '') {
+						if (vSelect == 0 && document.getElementById("hdFromYear").value == '') {
 								var d = new Date()
-								form1.hdFromYear.value = d.getFullYear()
+								document.getElementById("hdFromYear").value = d.getFullYear()
 						}	
-						if  (vSelect == 1 && form1.hdToYear.value == '') 	{
+						if  (vSelect == 1 && document.getElementById("hdToYear").value == '') 	{
 								var d = new Date()
-								form1.hdToYear.value = d.getFullYear()				
+								document.getElementById("hdToYear").value = d.getFullYear()				
 						}			
 					}			
 																								
 					function fnSetSourceControl() {
-							obj_caller.target.value = form1.hdFromMonth.value + '|' + form1.hdFromYear.value + '|' + form1.hdToMonth.value + '|' + form1.hdToYear.value
+							obj_caller.target.value = document.getElementById("hdFromMonth").value + '|' + document.getElementById("hdFromYear").value + '|' + document.getElementById("hdToMonth").value + '|' + document.getElementById("hdToYear").value
 					}	
 				
 			</script>

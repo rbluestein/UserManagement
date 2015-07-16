@@ -139,12 +139,12 @@
 						}
 					}
 					function Update()  {
-						form1.hdAction.value = "update"
+					    document.getElementById("hdAction").value = "update"
 						form1.submit()
 					}
 					
 					function ReturnToParentPage()  {
-						form1.hdAction.value = "return"
+					    document.getElementById("hdAction").value = "return"
 						form1.submit()
 					}						
 					
@@ -166,7 +166,7 @@
 					}		
 					
 					function ChangeYear(vIn)  {
-						form1.hdAction.value = vIn
+					    document.getElementById("hdAction").value = vIn
 						form1.submit()
 					}
 					
@@ -175,11 +175,10 @@
 					}		
 					
 					function ClientSelectionChanged()  {
-						form1.hdAction.value = "ClientSelectionChanged"
+					    document.getElementById("hdAction").value = "ClientSelectionChanged"
 						form1.submit()
 					}
-										
-																								
+																																	
 			</script>
 		</form>
 		<script type="text/javascript">

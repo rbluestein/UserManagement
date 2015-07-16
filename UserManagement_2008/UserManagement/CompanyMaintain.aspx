@@ -13,17 +13,17 @@
 	</head>
 	<body>
 		<form id="form1" name="form1" action="CompanyMaintain.aspx" method="post" runat="server">
-			<input type="hidden" name="hdAction" /><input type="hidden" id="hdConfirm" name="hdConfirm" />
+			<input type="hidden" id="hdAction" name="hdAction" /><input type="hidden" id="hdConfirm" name="hdConfirm" />
 			<script type="text/javascript">
 				function ConfirmKeyChange(vMsg)  {
 					var OKToChange = confirm(vMsg)
 					//var OKToChange = confirm("There are users currently associated with this Company ID. If you proceed with this change in Company ID, these users will be updated to the new Company ID value. Do you wish to proceed with this change?");
 					if (OKToChange == true) {
-						form1.hdConfirm.value = "yes"
+						document.getElementById("hdConfirm").value = "yes"
 					}  else {
-						form1.hdConfirm.value = "no"
+						document.getElementById("hdConfirm").value = "no"
 					}					
-					form1.hdAction.value = "keychange"
+					document.getElementById("hdAction").value = "keychange"
 					form1.submit()
 				}				
 			</script>
@@ -86,8 +86,8 @@
 			<asp:Label id="lblCurrentRights" runat="server"></asp:Label>
 			<asp:Literal id="litEnviro" runat="server" EnableViewState="False"></asp:Literal>
 			
-			<script type="text/javascript">		
-				document.write("<table style='background:#eeeedd;PADDING-LEFT: 4px;FONT: 8pt Arial, Helvetica, sans-serif; POSITION: absolute;TOP: 14px' cellspacing='0' cellpadding='0' width='125' border='0'><tr><td width='20'>User:</td><td>" + form1.hdLoggedInUserID.value + "</td></tr><tr><td>Site:</td><td WRAP=HARD>" + form1.hdDBHost.value + "</td></tr></table>")
+			<script type="text/javascript">
+			    document.write("<table style='background:#eeeedd;PADDING-LEFT: 4px;FONT: 8pt Arial, Helvetica, sans-serif; POSITION: absolute;TOP: 14px' cellspacing='0' cellpadding='0' width='125' border='0'><tr><td width='20'>User:</td><td>" + document.getElementById("hdLoggedInUserID").value + "</td></tr><tr><td>Site:</td><td WRAP=HARD>" + document.getElementById("hdDBHost").value + "</td></tr></table>")
 				
 				//new menuitems("userlic1", form1.currentrights.value);
 				new menuitems("userlic1", document.getElementById("currentrights").value);
@@ -102,12 +102,12 @@
 				}
 			}
 			function Update()  {
-				form1.hdAction.value = "update"
+			    document.getElementById("hdAction").value = "update"
 				form1.submit()
 			}
 			
 			function ReturnToParentPage()  {
-				form1.hdAction.value = "return"
+			    document.getElementById("hdAction").value = "return"
 				form1.submit()
 			}
 			

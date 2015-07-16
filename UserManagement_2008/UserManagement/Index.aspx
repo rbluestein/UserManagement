@@ -35,7 +35,7 @@
 			<asp:literal id="litEnviro" runat="server" enableviewstate="False"></asp:literal>
 			<script type="text/javascript">
 				//document.write("<table style='background:#eeeedd;PADDING-LEFT: 4px;FONT: 8pt Arial, Helvetica, sans-serif; POSITION: absolute;TOP: 14px' cellSpacing='0' cellPadding='0' width='125' border='0'><tr><td width='20'>User:</td><td wrap>awickenheiseranddaisytoo</td></tr><tr><td>Site:</td><td  WRAP=HARD>" + form1.hdDBHost.value + "</td></tr></table>")
-				document.write("<table style='background:#eeeedd;PADDING-LEFT: 4px;FONT: 8pt Arial, Helvetica, sans-serif; POSITION: absolute;TOP: 14px' cellSpacing='0' cellPadding='0' width='125' border='0'><tr><td width='20'>User:</td><td>" + form1.hdLoggedInUserID.value + "</td></tr><tr><td>Site:</td><td WRAP=HARD>" + form1.hdDBHost.value + "</td></tr></table>")
+			    document.write("<table style='background:#eeeedd;PADDING-LEFT: 4px;FONT: 8pt Arial, Helvetica, sans-serif; POSITION: absolute;TOP: 14px' cellSpacing='0' cellPadding='0' width='125' border='0'><tr><td width='20'>User:</td><td>" + document.getElementById("hdLoggedInUserID").value + "</td></tr><tr><td>Site:</td><td WRAP=HARD>" + document.getElementById("hdDBHost").value + "</td></tr></table>")
 
 				//new menuitems("userlic1", form1.currentrights.value);
 				new menuitems("userlic1", document.getElementById("currentrights").value);
@@ -46,14 +46,14 @@
 			<script type="text/javascript"> 			
 
 			function Sort(vField) {
-				form1.hdAction.value = "Sort"
-				form1.hdSortField.value = vField
+				document.getElementById("hdAction").value = "Sort"
+				document.getElementById("hdSortField").value = vField
 				form1.submit()
 			}
 	
 			function ToggleShowFilter()  {
-				form1.hdFilterShowHideToggle.value = 1
-				form1.hdAction.value = "ApplyFilter"
+			    document.getElementByIdhdFilterShowHideToggle = 1
+			    document.getElementById("hdAction").value = "ApplyFilter"
 				form1.submit()
 			}				
 	/*
@@ -82,41 +82,41 @@
 */
 
 			function ApplyFilter()
-			{		
-				form1.hdAction.value = "ApplyFilter"
+			{
+			    document.getElementById("hdAction").value = "ApplyFilter"
 				form1.submit()				
-			}						 						
-						
+			}						 											
 
 			function ExistingRecord(vUserID)
 			{
-				form1.hdAction.value = "ExistingRecord"
-				form1.hdUserID.value = vUserID
+			    document.getElementById("hdAction").value = "ExistingRecord"
+			    document.getElementById("hdUserID").value = vUserID
 				form1.submit()
-			}
+            }
+			
 			function Permissions(vUserID)
 			{
-				form1.hdAction.value = "Permissions"
-				form1.hdUserID.value = vUserID
+			    document.getElementById("hdAction").value = "Permissions"
+			    document.getElementById("hdUserID").value = vUserID
 				form1.submit()
 			}	
 			
 			function License(vUserID)
 			{
-				form1.hdAction.value = "License"
-				form1.hdUserID.value = vUserID
+			    document.getElementById("hdAction").value = "License"
+			    document.getElementById("hdUserID").value = vUserID
 				form1.submit()
 			}						
 			
 			function NewRecord() {
-				form1.hdAction.value = "NewRecord"
+			    document.getElementById("hdAction").value = "NewRecord"
 				form1.submit()
 			}				
 
 			function SubmitOnEnterKey(e) {
 				var keypressevent = e ? e : window.event
-				if (keypressevent.keyCode == 13) {	
-					form1.hdAction.value = "ApplyFilter"						 	
+				if (keypressevent.keyCode == 13) {
+				    document.getElementById("hdAction").value = "ApplyFilter"					 	
 					form1.submit()
 				}			
 			}		
@@ -125,8 +125,8 @@
 				vUserName = vUserName.replace("~", "'");
 				var OKToDelete = confirm("Are you sure you wish to delete " + vUserName + "?");
 				if (OKToDelete == true) {
-					form1.hdAction.value = "Delete"
-					form1.hdUserID.value = vUserID
+				    document.getElementById("hdAction").value = "Delete"
+				    document.getElementById("hdUserID").value = vUserID
 					form1.submit()		
 				}		
 			}				
