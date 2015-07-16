@@ -204,6 +204,10 @@ Public Class Common
         a = b / c
     End Sub
 
+    Public Function GetlitEnviroText(ByVal LoggedInUserID As String, ByVal DBHost As String) As String
+        Return "<input type='hidden' id='hdLoggedInUserID' name='hdLoggedInUserID' value='" & LoggedInUserID & "'/><input type='hidden' id='hdDBHost' name='hdDBHost'  value='" & DBHost & "'/>"
+    End Function
+
     Public Function GetNewRecordID(ByVal TableName As String, ByVal KeyFldName As String) As Integer
         Dim RandValue As Integer
         Dim dt As DataTable
@@ -1774,11 +1778,11 @@ Public Class Common
             sb.Append(RightsColl(i) & "|")
         Next
         sb.Length -= 1
-        Return "<input type='hidden' id='currentrights' name='currentrights' value=""" & sb.ToString & """>"
+        Return "<input type='hidden' id='currentrights' name='currentrights' value=""" & sb.ToString & """/>"
     End Function
 
     Public Function GetCurRightsHidden(ByVal RightsStr As String) As String
-        Return "<input type='hidden'id='currentrights' name='currentrights' value=""" & RightsStr & """ > "
+        Return "<input type='hidden'id='currentrights' id='currentrights' name='currentrights' value=""" & RightsStr & """ /> "
     End Function
 #End Region
 

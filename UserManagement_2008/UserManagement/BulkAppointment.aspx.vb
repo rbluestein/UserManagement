@@ -122,7 +122,8 @@ Public Class BulkAppointment
             ' ___ Display enviroment
             ' PageCaption.InnerHtml = cCommon.GetPageCaption
             PageCaption.Text = cCommon.GetPageCaption
-            litEnviro.Text = "<input type='hidden' name='hdLoggedInUserID' value='" & cEnviro.LoggedInUserID & "'><input type='hidden' name='hdDBHost'  value='" & cEnviro.DBHost & "'>"
+            'litEnviro.Text = "<input type='hidden' name='hdLoggedInUserID' value='" & cEnviro.LoggedInUserID & "'/><input type='hidden' name='hdDBHost'  value='" & cEnviro.DBHost & "'/>"
+            litEnviro.Text = cCommon.GetlitEnviroText(cEnviro.LoggedInUserID, cEnviro.DBHost)
 
         Catch ex As Exception
             Dim ErrorObj As New ErrorObj(ex, "Error #702: BulkAppointment Page_Load. " & ex.Message)

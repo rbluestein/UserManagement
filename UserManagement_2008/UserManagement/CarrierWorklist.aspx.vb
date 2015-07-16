@@ -89,7 +89,8 @@ Partial Class CarrierWorklist
 
             ' ___ Display enviroment
             PageCaption.InnerHtml = cCommon.GetPageCaption
-            litEnviro.Text = "<input type='hidden' name='hdLoggedInUserID' value='" & cEnviro.LoggedInUserID & "'><input type='hidden' name='hdDBHost'  value='" & cEnviro.DBHost & "'>"
+            'litEnviro.Text = "<input type='hidden' name='hdLoggedInUserID' value='" & cEnviro.LoggedInUserID & "'/><input type='hidden' name='hdDBHost'  value='" & cEnviro.DBHost & "'/>"
+            litEnviro.Text = cCommon.GetlitEnviroText(cEnviro.LoggedInUserID, cEnviro.DBHost)
 
         Catch ex As Exception
             'Throw New Exception("Error #202: CarrierWorklist Page_Load. " & ex.Message)

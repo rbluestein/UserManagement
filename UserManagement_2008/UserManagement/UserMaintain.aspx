@@ -183,12 +183,12 @@
 					<tr>
 						<td colspan="2">&nbsp;</td>
 					</tr>
-					<tr>
+<%--					<tr>
 						<td class="Cell9Reg" colspan="2" align="left"><u>Falcon</u></td>
 					</tr>					
 					<tr>
 						<td class="Cell9Reg" colspan="2"><asp:literal id="litFalcon" runat="server"  enableviewstate="True"></asp:literal></td>
-					</tr>
+					</tr>--%>
 				</asp:placeholder>
 				<tr>
 					<td style="WIDTH: 555px" colspan="2">&nbsp;</td>
@@ -207,10 +207,11 @@
 				TermDate.year_scroll = true; TermDate.time_comp = false;				
 			</script>
 			<asp:literal id="litEnviro" runat="server" enableviewstate="False"></asp:literal>
-			<script type="text/javascript">	
-				document.write("<table style='background:#eeeedd;PADDING-LEFT: 4px;FONT: 8pt Arial, Helvetica, sans-serif; POSITION: absolute;TOP: 14px' cellSpacing='0' cellPadding='0' width='125' border='0'><tr><td width='20'>User:</td><td>" + form1.hdLoggedInUserID.value + "</td></tr><tr><td>Site:</td><td WRAP=HARD>" + form1.hdDBHost.value + "</td></tr></table>")			
+			<script type="text/javascript">
+			    //document.write("<table style='background:#eeeedd;PADDING-LEFT: 4px;FONT: 8pt Arial, Helvetica, sans-serif; POSITION: absolute;TOP: 14px' cellSpacing='0' cellPadding='0' width='125' border='0'><tr><td width='20'>User:</td><td>" + document.getElementById("hdLoggedInUserID").value + "</td></tr><tr><td>Site:</td><td WRAP=HARD>" + document.getElementById("hdHost").value + "</td></tr></table>")
+			    document.write("<table style='background:#eeeedd;PADDING-LEFT: 4px;FONT: 8pt Arial, Helvetica, sans-serif; POSITION: absolute;TOP: 14px' cellSpacing='0' cellPadding='0' width='125' border='0'><tr><td width='20'>User:</td><td>" + document.getElementById("hdLoggedInUserID").value + "</td></tr><tr><td>Site:</td><td WRAP=HARD>" + document.getElementById("hdDBHost").value + "</td></tr></table>")			
 				
-				new menuitems("userlic1", form1.currentrights.value);
+				new menuitems("userlic1", document.getElementById("currentrights").value);
 				new tpl("v", "admin");
 				new menu (MENU_ITEMS, MENU_TPL);				
 			</script>
@@ -222,7 +223,8 @@
 				}
 			}
 			function Update()  {
-				form1.hdAction.value = "update"
+			    form1.hdAction.value = "update"
+				//document.getElementsByTagName("form")[0].submit()
 				form1.submit()
 			}
 			

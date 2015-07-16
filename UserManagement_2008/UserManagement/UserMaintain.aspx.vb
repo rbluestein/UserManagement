@@ -56,7 +56,8 @@ Partial Class UserMaintain
 
             ' ___ Display enviroment
             PageCaption.InnerHtml = cCommon.GetPageCaption
-            litEnviro.Text = "<input type='hidden' name='hdLoggedInUserID' value='" & cEnviro.LoggedInUserID & "'><input type='hidden' name='hdDBHost'  value='" & cEnviro.DBHost & "'>"
+            'litEnviro.Text = "<input type='hidden' id='hdLoggedInUserID' name='hdLoggedInUserID' value='" & cEnviro.LoggedInUserID & "'/><input type='hidden' id='hdDBHost' name='hdDBHost'  value='" & cEnviro.DBHost & "'/>"
+            litEnviro.Text = cCommon.GetlitEnviroText(cEnviro.LoggedInUserID, cEnviro.DBHost)
 
         Catch ex As Exception
             ' Throw New Exception("Error #150: UserMaintain Page_Load. " & ex.Message)
@@ -281,16 +282,18 @@ Partial Class UserMaintain
             ' // Falcon save
 
             ' ___ First, refresh array in the event of a user change of Falcon data.
-            HandleFalcon(ResponseActionEnum.DisplayUserInputNewOrExisting)
+
+            ' *** Gone ***
+            'HandleFalcon(ResponseActionEnum.DisplayUserInputNewOrExisting)
 
             ' ___ Now, validate.
-            For i = 0 To cSess.FalconData.GetUpperBound(0)
-                If cSess.FalconData(i, 3) = String.Empty AndAlso cSess.FalconData(i, 4) <> String.Empty Then
-                    cCommon.ValidateErrorOnly(ErrColl, "Falcon " & cSess.FalconData(i, 1) & " " & cSess.FalconData(i, 2) & ": missing user id")
-                ElseIf cSess.FalconData(i, 3) <> String.Empty AndAlso cSess.FalconData(i, 4) = String.Empty Then
-                    cCommon.ValidateErrorOnly(ErrColl, "Falcon " & cSess.FalconData(i, 1) & " " & cSess.FalconData(i, 2) & ": missing password")
-                End If
-            Next
+            'For i = 0 To cSess.FalconData.GetUpperBound(0)
+            '    If cSess.FalconData(i, 3) = String.Empty AndAlso cSess.FalconData(i, 4) <> String.Empty Then
+            '        cCommon.ValidateErrorOnly(ErrColl, "Falcon " & cSess.FalconData(i, 1) & " " & cSess.FalconData(i, 2) & ": missing user id")
+            '    ElseIf cSess.FalconData(i, 3) <> String.Empty AndAlso cSess.FalconData(i, 4) = String.Empty Then
+            '        cCommon.ValidateErrorOnly(ErrColl, "Falcon " & cSess.FalconData(i, 1) & " " & cSess.FalconData(i, 2) & ": missing password")
+            '    End If
+            'Next
 
             If ErrColl.Count = 0 Then
                 MyResults.Success = True
@@ -426,21 +429,21 @@ Partial Class UserMaintain
                 End If
 
                 ' ___ Falcon save
-                For i = 0 To cSess.FalconData.GetUpperBound(0)
-                    If cSess.FalconData(i, 3) = String.Empty Or cSess.FalconData(i, 4) = String.Empty Then
-                        cCommon.ExecuteNonQuery("DELETE Falcon..FalconUserLookup WHERE BVIUserID = '" & cSess.UserID & "' AND CaseShortName = '" & cSess.FalconData(i, 0) & "'")
-                    Else
+                'For i = 0 To cSess.FalconData.GetUpperBound(0)
+                '    If cSess.FalconData(i, 3) = String.Empty Or cSess.FalconData(i, 4) = String.Empty Then
+                '        cCommon.ExecuteNonQuery("DELETE Falcon..FalconUserLookup WHERE BVIUserID = '" & cSess.UserID & "' AND CaseShortName = '" & cSess.FalconData(i, 0) & "'")
+                '    Else
 
-                        ' ___ Test for existing record.
-                        dt = cCommon.GetDT("SELECT Count (*) FROM Falcon..FalconUserLookup WHERE BVIUserID = '" & cSess.UserID & "' AND CaseShortName = '" & cSess.FalconData(i, 0) & "'")
-                        If dt.Rows(0)(0) = 0 Then
-                            cCommon.ExecuteNonQuery("INSERT INTO Falcon..FalconUserLookup (CaseShortName, BVIUserID, FalconUserID, FalconPassword) VALUES ('" & cSess.FalconData(i, 0) & "', '" & cSess.UserID & "', '" & cSess.FalconData(i, 3) & "', '" & cSess.FalconData(i, 4) & "')")
-                        Else
-                            cCommon.ExecuteNonQuery("UPDATE Falcon..FalconUserLookup SET FalconUserID = '" & cSess.FalconData(i, 3) & "', FalconPassword = '" & cSess.FalconData(i, 4) & "' WHERE BVIUserID = '" & cSess.UserID & "' AND CaseShortName = '" & cSess.FalconData(i, 0) & "'")
-                        End If
+                '        ' ___ Test for existing record.
+                '        dt = cCommon.GetDT("SELECT Count (*) FROM Falcon..FalconUserLookup WHERE BVIUserID = '" & cSess.UserID & "' AND CaseShortName = '" & cSess.FalconData(i, 0) & "'")
+                '        If dt.Rows(0)(0) = 0 Then
+                '            cCommon.ExecuteNonQuery("INSERT INTO Falcon..FalconUserLookup (CaseShortName, BVIUserID, FalconUserID, FalconPassword) VALUES ('" & cSess.FalconData(i, 0) & "', '" & cSess.UserID & "', '" & cSess.FalconData(i, 3) & "', '" & cSess.FalconData(i, 4) & "')")
+                '        Else
+                '            cCommon.ExecuteNonQuery("UPDATE Falcon..FalconUserLookup SET FalconUserID = '" & cSess.FalconData(i, 3) & "', FalconPassword = '" & cSess.FalconData(i, 4) & "' WHERE BVIUserID = '" & cSess.UserID & "' AND CaseShortName = '" & cSess.FalconData(i, 0) & "'")
+                '        End If
 
-                    End If
-                Next
+                '    End If
+                'Next
 
                 ' ___ Notify network administrator
                 If cEnviro.DBHost = "HBG-SQL" Then
@@ -677,34 +680,8 @@ Partial Class UserMaintain
 
             End If
 
-            HandleFalcon(ResponseAction)
-
-            '' ___ Handle Falcon
-            'Select Case ResponseAction
-            '    Case ResponseAction.DisplayBlank, ResponseAction.DisplayExisting
-            '        sb.Append("SELECT f.CaseShortName, f.FalconUserID, f.FalconPassword, c.CaseDescription ")
-            '        sb.Append("FROM Falcon..FalconUserLookup f ")
-            '        sb.Append("INNER JOIN Falcon..CaseSetup c ON c.CaseShortName = f.CaseShortName ")
-            '        sb.Append("WHERE f.bviuserid = '" & cSess.UserID & "'")
-            '        dtFalcon = cCommon.GetDT(sb.ToString, False)
-            '        sb.Length = 0
-            '        sb.Append("<table class='PrimaryTblEmbedded' cellSpacing='0' cellPadding='0' width='100%' border='0'>")
-            '        sb.Append("<tr><td>Case</td><td>Falcon UserID</td><td>Falcon Password</td></tr>")
-            '        For i = 0 To dtFalcon.Rows.Count - 1
-            '            sb.Append("<tr><td>" & dtFalcon.Rows(i)("CaseDescription") & "</td>")
-            '            sb.Append("<td><input type='text' value='" & dtFalcon.Rows(i)("FalconUserID") & "' name='" & dtFalcon.Rows(i)("CaseShortName") & " _FalconUserID'></td>")
-            '            sb.Append("<td><input type='text' value='" & dtFalcon.Rows(i)("FalconPassword") & "' name='" & dtFalcon.Rows(i)("CaseShortName") & " _FalconPassword'></td></tr>")
-            '        Next
-            '        sb.Append("</table>")
-            '        litFalcon.Text = sb.ToString
-
-
-            '    Case ResponseAction.DisplayUserInputNew, ResponseAction.DisplayUserInputExisting
-
-
-            'End Select
-
-
+            ' *** Gone ***
+            'HandleFalcon(ResponseAction)
 
             litHiddens.Text = "<input type='hidden' name='hdSubjUserID' value=""" & cSess.UserID & """>"
 
@@ -713,81 +690,81 @@ Partial Class UserMaintain
         End Try
     End Sub
 
-    Private Sub HandleFalcon(ByVal ResponseAction As ResponseActionEnum)
-        Dim i As Integer
-        Dim dt As New DataTable
-        Dim sb As New System.Text.StringBuilder
-        Dim CaseShortName As String
+    'Private Sub HandleFalcon(ByVal ResponseAction As ResponseActionEnum)
+    '    Dim i As Integer
+    '    Dim dt As New DataTable
+    '    Dim sb As New System.Text.StringBuilder
+    '    Dim CaseShortName As String
 
-        ' // This method has two sources. The first is IsDataValid, which requires update of the FalconData array only. 
-        ' // It passes the argument of ResponseAction.DisplayUserInputNewOrExisting to differentiate from the second souce.
-        ' // The second source is DisplayPage, which passes one of the other arguments. You may have noticed that
-        ' // the arguments DisplayUserInputNew and DisplayUserInputExisting are generated by a failed save and 
-        ' // update the array, same as DisplayUserInputNewOrExisting. This is a precaution against someone in the
-        ' // distant future modifying the page and getting stuck on the Falcon update.
+    '    ' // This method has two sources. The first is IsDataValid, which requires update of the FalconData array only. 
+    '    ' // It passes the argument of ResponseAction.DisplayUserInputNewOrExisting to differentiate from the second souce.
+    '    ' // The second source is DisplayPage, which passes one of the other arguments. You may have noticed that
+    '    ' // the arguments DisplayUserInputNew and DisplayUserInputExisting are generated by a failed save and 
+    '    ' // update the array, same as DisplayUserInputNewOrExisting. This is a precaution against someone in the
+    '    ' // distant future modifying the page and getting stuck on the Falcon update.
 
-        Try
+    '    Try
 
-            ' ___ First, get the Falcon records.
-            sb.Append("SELECT ccid.ClientShortName, c.CaseShortName, c.CaseDescription, FalconUserID = ISNULL(u.FalconUserID, ''), FalconPassword = ISNULL(u.FalconPassword, '') ")
-            sb.Append("FROM Falcon..Codes_CaseShortName c ")
-            sb.Append("INNER JOIN UserManagement..Codes_ClientID ccid ON c.ClientID = ccid.ClientID ")
-            sb.Append("LEFT JOIN Falcon..FalconUserLookup u ON c.CaseShortName = u.CaseShortName AND u.bviuserid = '" & cSess.UserID & "' ")
-            sb.Append("ORDER BY c.ClientID, c.CaseDescription")
-            dt = cCommon.GetDT(sb.ToString, False)
-            sb.Length = 0
+    '        ' ___ First, get the Falcon records.
+    '        sb.Append("SELECT ccid.ClientShortName, c.CaseShortName, c.CaseDescription, FalconUserID = ISNULL(u.FalconUserID, ''), FalconPassword = ISNULL(u.FalconPassword, '') ")
+    '        sb.Append("FROM Falcon..Codes_CaseShortName c ")
+    '        sb.Append("INNER JOIN UserManagement..Codes_ClientID ccid ON c.ClientID = ccid.ClientID ")
+    '        sb.Append("LEFT JOIN Falcon..FalconUserLookup u ON c.CaseShortName = u.CaseShortName AND u.bviuserid = '" & cSess.UserID & "' ")
+    '        sb.Append("ORDER BY c.ClientID, c.CaseDescription")
+    '        dt = cCommon.GetDT(sb.ToString, False)
+    '        sb.Length = 0
 
-            ' ___ Initialize FalconData for new or existing record
-            Select Case ResponseAction
-                Case ResponseActionEnum.DisplayBlank, ResponseActionEnum.DisplayExisting
+    '        ' ___ Initialize FalconData for new or existing record
+    '        Select Case ResponseAction
+    '            Case ResponseActionEnum.DisplayBlank, ResponseActionEnum.DisplayExisting
 
-                    ' ___ Build FalconData array
-                    cSess.FalconData = Nothing
-                    If dt.Rows.Count > 0 Then
-                        ReDim cSess.FalconData(dt.Rows.Count - 1, 4)
-                        For i = 0 To dt.Rows.Count - 1
-                            cSess.FalconData(i, 0) = dt.Rows(i)("CaseShortName")
-                            cSess.FalconData(i, 1) = dt.Rows(i)("ClientShortName")
-                            cSess.FalconData(i, 2) = dt.Rows(i)("CaseDescription")
-                            cSess.FalconData(i, 3) = dt.Rows(i)("FalconUserID")
-                            cSess.FalconData(i, 4) = dt.Rows(i)("FalconPassword")
-                        Next
-                    End If
+    '                ' ___ Build FalconData array
+    '                cSess.FalconData = Nothing
+    '                If dt.Rows.Count > 0 Then
+    '                    ReDim cSess.FalconData(dt.Rows.Count - 1, 4)
+    '                    For i = 0 To dt.Rows.Count - 1
+    '                        cSess.FalconData(i, 0) = dt.Rows(i)("CaseShortName")
+    '                        cSess.FalconData(i, 1) = dt.Rows(i)("ClientShortName")
+    '                        cSess.FalconData(i, 2) = dt.Rows(i)("CaseDescription")
+    '                        cSess.FalconData(i, 3) = dt.Rows(i)("FalconUserID")
+    '                        cSess.FalconData(i, 4) = dt.Rows(i)("FalconPassword")
+    '                    Next
+    '                End If
 
-                Case ResponseActionEnum.DisplayUserInputNew, ResponseActionEnum.DisplayUserInputExisting, ResponseActionEnum.DisplayUserInputNewOrExisting
+    '            Case ResponseActionEnum.DisplayUserInputNew, ResponseActionEnum.DisplayUserInputExisting, ResponseActionEnum.DisplayUserInputNewOrExisting
 
-                    ' // First check for page entries. These may not be present if the user has opened a previously closed enroller section. 
+    '                ' // First check for page entries. These may not be present if the user has opened a previously closed enroller section. 
 
-                    ' ___ Update array from user input.
-                    If Request.Form("hdFalconInd") = "1" Then
-                        For i = 0 To dt.Rows.Count - 1
-                            cSess.FalconData(i, 3) = Request.Form(dt.Rows(i)("CaseShortName") & " _FalconUserID")
-                            cSess.FalconData(i, 4) = Request.Form(dt.Rows(i)("CaseShortName") & " _FalconPassword")
-                        Next
-                    End If
+    '                ' ___ Update array from user input.
+    '                If Request.Form("hdFalconInd") = "1" Then
+    '                    For i = 0 To dt.Rows.Count - 1
+    '                        cSess.FalconData(i, 3) = Request.Form(dt.Rows(i)("CaseShortName") & " _FalconUserID")
+    '                        cSess.FalconData(i, 4) = Request.Form(dt.Rows(i)("CaseShortName") & " _FalconPassword")
+    '                    Next
+    '                End If
 
-            End Select
+    '        End Select
 
-            If ResponseAction <> ResponseActionEnum.DisplayUserInputNewOrExisting Then
+    '        If ResponseAction <> ResponseActionEnum.DisplayUserInputNewOrExisting Then
 
-                ' ___ Now, write the values to the textboxes when this method is called by DisplayPage.
-                sb.Append("<input type = 'hidden' name = 'hdFalconInd' value = '1'><table class='PrimaryTblEmbedded' cellSpacing='0' cellPadding='0' width='100%' border='0'>")
-                sb.Append("<tr><td>&nbsp;</td><td>Falcon UserID</td><td>Falcon Password</td></tr>")
-                For i = 0 To cSess.FalconData.GetUpperBound(0)
-                    CaseShortName = cSess.FalconData(i, 0)
-                    sb.Append("<tr><td>" & dt.Rows(i)("ClientShortName") & " " & dt.Rows(i)("CaseDescription") & "</td>")
-                    sb.Append("<td><input type='text' onkeyup='fnAlphaNumericOnly(this)' value='" & cSess.FalconData(i, 3) & "' name='" & CaseShortName & " _FalconUserID'></td>")
-                    sb.Append("<td><input type='text' onkeyup='fnAlphaNumericOnly(this)'  value='" & cSess.FalconData(i, 4) & "' name='" & CaseShortName & " _FalconPassword'></td></tr>")
-                Next
-                sb.Append("</table>")
-                litFalcon.Text = sb.ToString
+    '            ' ___ Now, write the values to the textboxes when this method is called by DisplayPage.
+    '            sb.Append("<input type = 'hidden' name = 'hdFalconInd' value = '1'><table class='PrimaryTblEmbedded' cellSpacing='0' cellPadding='0' width='100%' border='0'>")
+    '            sb.Append("<tr><td>&nbsp;</td><td>Falcon UserID</td><td>Falcon Password</td></tr>")
+    '            For i = 0 To cSess.FalconData.GetUpperBound(0)
+    '                CaseShortName = cSess.FalconData(i, 0)
+    '                sb.Append("<tr><td>" & dt.Rows(i)("ClientShortName") & " " & dt.Rows(i)("CaseDescription") & "</td>")
+    '                sb.Append("<td><input type='text' onkeyup='fnAlphaNumericOnly(this)' value='" & cSess.FalconData(i, 3) & "' name='" & CaseShortName & " _FalconUserID'></td>")
+    '                sb.Append("<td><input type='text' onkeyup='fnAlphaNumericOnly(this)'  value='" & cSess.FalconData(i, 4) & "' name='" & CaseShortName & " _FalconPassword'></td></tr>")
+    '            Next
+    '            sb.Append("</table>")
+    '            litFalcon.Text = sb.ToString
 
-            End If
+    '        End If
 
-        Catch ex As Exception
-            Throw New Exception("Error #156: UserMaintain HandleFalcon. " & ex.Message)
-        End Try
-    End Sub
+    '    Catch ex As Exception
+    '        Throw New Exception("Error #156: UserMaintain HandleFalcon. " & ex.Message)
+    '    End Try
+    'End Sub
 
     Private Sub FormatControls()
         Try

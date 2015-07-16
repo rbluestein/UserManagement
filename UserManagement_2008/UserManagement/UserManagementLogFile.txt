@@ -1,1 +1,2 @@
 [7/15/2015 5:08:11 PM rbluestein] Error #109: Index ClearDownloads. Could not find a part of the path 'C:\Github\UserManagement\UserManagement_2008\UserManagement\TempData'. ** ERROR FORCING APPLICATION SHUTDOWN **
+[7/15/2015 6:01:44 PM rbluestein] Error #152: UserMaintain IsDataValid. Object variable or With block variable not set. ** ERROR FORCING APPLICATION SHUTDOWN **

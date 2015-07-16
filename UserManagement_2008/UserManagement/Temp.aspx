@@ -10,7 +10,17 @@
     <form id="form1" runat="server">
     <div>
     
+        <asp:Button ID="Button1" runat="server" Text="Button" />
+        
+        <input type="button" value="Submitty" onclick="fnSubmit()" />
+    
     </div>
     </form>
+    <script type="text/javascript">
+        function fnSubmit() {
+            form1.submit()
+            //document.getElementsByTagName("form")[0].submit()
+        }
+    </script>
 </body>
 </html>
