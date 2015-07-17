@@ -1782,7 +1782,7 @@ Public Class Common
     End Function
 
     Public Function GetCurRightsHidden(ByVal RightsStr As String) As String
-        Return "<input type='hidden'id='currentrights' id='currentrights' name='currentrights' value=""" & RightsStr & """ /> "
+        Return "<input type='hidden'id='currentrights' name='currentrights' value=""" & RightsStr & """ /> "
     End Function
 #End Region
 

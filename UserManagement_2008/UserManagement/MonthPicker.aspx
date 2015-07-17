@@ -8,7 +8,7 @@
         <link href="css/JSControls.css" rel="stylesheet" type="text/css" />
 	</head>
 	<body onunload="fnClose()">
-		<form id="form2" method="post" runat="server">
+		<form id="form1" method="post" runat="server">
 			<input type='hidden' id='hdCurMonth' /><input type='hidden' id='hdCurYear' /><input type='hidden' id='hdInitial' value='1' />
 			<input type='hidden' id='hdFromMonth' /><input type='hidden' id='hdFromYear' /><input type='hidden' id='hdToMonth' /><input type='hidden' id='hdToYear' />
 			<table cellpadding="0" style="LEFT: 10px; POSITION: absolute; TOP: 0px">

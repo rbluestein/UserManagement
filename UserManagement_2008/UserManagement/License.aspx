@@ -15,7 +15,7 @@
 	</head>
 	<body>
 		<form id="form1" name="form1" action="License.aspx" method="post" runat="server">
-			<input type="hidden" name="hdAction" /><input type="hidden" name="hdSubAction" />
+			<input type="hidden" id="hdAction" name="hdAction" /><input type="hidden" id="hdSubAction" name="hdSubAction" />
 			<table class="PrimaryTbl" style="POSITION: absolute; TOP: 14px; LEFT: 140px" cellspacing="0"
 				cellpadding="0" width="650" border="0">
 				<tr style="DISPLAY: none">

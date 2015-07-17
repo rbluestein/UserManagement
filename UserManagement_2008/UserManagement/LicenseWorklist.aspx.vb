@@ -447,9 +447,9 @@ Partial Class LicenseWorklist
             '' ___ Write the filter hiddens to the page
             'If DG.FilterOperationMode = DG.FilterOperationModeEnum.FilterSwitchable Then
             '    If ShowFilter Then
-            '        litFilterHiddens.Text = "<input type='hidden' name='hdFilterOnResponse' value='on'><input type='hidden' name='hdFilterShowHideToggle' id='hdFilterShowHideToggle' value='0'>"
+            '        litFilterHiddens.Text = "<input type='hidden' name='hdFilterOnResponse' value='on'><input type='hidden' id='hdFilterShowHideToggle' name='hdFilterShowHideToggle' id='hdFilterShowHideToggle' value='0'>"
             '    Else
-            '        litFilterHiddens.Text = "<input type='hidden' name='hdFilterOnResponse' value='off'><input type='hidden' name='hdFilterShowHideToggle' id='hdFilterShowHideToggle' value='0'>"
+            '        litFilterHiddens.Text = "<input type='hidden' name='hdFilterOnResponse' value='off'><input type='hidden' id='hdFilterShowHideToggle' name='hdFilterShowHideToggle' id='hdFilterShowHideToggle' value='0'>"
             '    End If
             'End If
 

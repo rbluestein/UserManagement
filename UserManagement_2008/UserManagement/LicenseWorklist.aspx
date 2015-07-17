@@ -12,9 +12,9 @@
         <script src="jscripts/menu_tpl.js" type="text/javascript"></script>
 	</head>
 	<body>
-		<form id="form2" runat="server">
-			<input type="hidden" name="hdAction" /> <input type="hidden" name="hdSortField" /><input type="hidden" name="hdAppointmentNumber" />
-			<input type='hidden' name='hdFilterShowHideToggle' id='hdFilterShowHideToggle' value='0' />
+		<form id="form1" runat="server">
+			<input type="hidden" id="hdAction" name="hdAction" /> <input type="hidden" id="hdSortField" name="hdSortField" /><input type="hidden" name="hdAppointmentNumber" />
+			<input type='hidden' id='hdFilterShowHideToggle' name='hdFilterShowHideToggle' value='0' />
 			<table class="PrimaryTbl" style="LEFT: 140px; POSITION: absolute; TOP: 14px" cellspacing="0"
 				cellpadding="0" width="650" border="0">
 				<tr>

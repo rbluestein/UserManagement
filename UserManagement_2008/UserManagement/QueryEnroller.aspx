@@ -13,8 +13,8 @@
 	</head>
 	<body>
 		<form id="form1" runat="server">
-			<input type="hidden" name="hdAction" /> <input type="hidden" name="hdSortField" /> <input type="hidden" name="hdUserID" />
-			<input type='hidden' name='hdFilterShowHideToggle' id='hdFilterShowHideToggle' value='0' />
+			<input type="hidden" id="hdAction" name="hdAction" /> <input type="hidden" id="hdSortField" name="hdSortField" /> <input type="hidden" id="hdUserID" name="hdUserID" />
+			<input type='hidden' id='hdFilterShowHideToggle' name='hdFilterShowHideToggle' value='0' />
 			<table class="PrimaryTbl" style="LEFT: 140px; POSITION: absolute; TOP: 14px" cellspacing="0"
 				cellpadding="0" width="1000" border="0">
 				<tr style="DISPLAY: none">
@@ -47,65 +47,65 @@
 			<script type="text/javascript"> 			
 
 			function Sort(vField) {
-				form1.hdAction.value = "Sort"
-				form1.hdSortField.value = vField
-				form1.submit()
+			    document.getElementById("hdAction").value = "Sort"
+			    document.getElementById("hdSortField").value = vField
+			    form1.submit()
 			}
 	
 			function ToggleShowFilter()  {
-				form1.hdFilterShowHideToggle.value = 1
-				form1.hdAction.value = "ApplyFilter"
+			    document.getElementById("hdFilterShowHideToggle").value = 1
+			    document.getElementById("hdAction").value = "ApplyFilter"
 				form1.submit()
 			}									 						
 					
 			function View()
-			{		
-				form1.hdAction.value = "ApplyFilter"
+			{
+			    document.getElementById("hdAction").value = "ApplyFilter"
 				form1.submit()				
 			}	
 			
 			function ApplyFilter()
-			{		
-				form1.hdAction.value = "ApplyFilter"
+			{
+			    document.getElementById("hdAction").value = "ApplyFilter"
 				form1.submit()				
 			}									
 			
 			function Download()
-			{		
-				form1.hdAction.value = "Download"
+			{
+			    document.getElementById("hdAction").value = "Download"
 				form1.submit()				
 			}				
 
 			function ExistingRecord(vUserID)
 			{
-				form1.hdAction.value = "ExistingRecord"
-				form1.hdUserID.value = vUserID
+			    document.getElementById("hdAction").value = "ExistingRecord"
+			    document.getElementById("hdUserID").value = vUserID
 				form1.submit()
 			}
 			function Permissions(vUserID)
 			{
-				form1.hdAction.value = "Permissions"
-				form1.hdUserID.value = vUserID
+			    document.getElementById("hdAction").value = "Permissions"
+			    document.getElementById("hdUserID").value = vUserID
 				form1.submit()
 			}	
 			
 			function License(vUserID)
 			{
-				form1.hdAction.value = "License"
-				form1.hdUserID.value = vUserID
+			    document.getElementById("hdAction").value = "License"
+			    document.getElementById("hdUserID").value = vUserID
 				form1.submit()
 			}						
 			
 			function NewRecord() {
-				form1.hdAction.value = "NewRecord"
-				form1.submit()
+			    document.getElementById("hdAction").value = "NewRecord"
+			    form1.submit()
 			}				
 
 			function SubmitOnEnterKey(e) {
 				var keypressevent = e ? e : window.event
-				if (keypressevent.keyCode == 13) {	
-					form1.hdAction.value = "ApplyFilter"						 	
-					form1.submit()
+				if (keypressevent.keyCode == 13) {
+				    document.getElementById("hdAction").value = "ApplyFilter"
+				    form1.submit()
 				}			
 			}		
 			
@@ -113,8 +113,8 @@
 				vUserName = vUserName.replace("~", "'");
 				var OKToDelete = confirm("Are you sure you wish to delete " + vUserName + "?");
 				if (OKToDelete == true) {
-					form1.hdAction.value = "Delete"
-					form1.hdUserID.value = vUserID
+				    document.getElementById("hdAction").value = "Delete"
+				    document.getElementById("hdUserID").value = vUserID
 					form1.submit()		
 				}		
 			}				

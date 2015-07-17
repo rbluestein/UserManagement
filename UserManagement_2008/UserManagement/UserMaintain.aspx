@@ -15,7 +15,7 @@
 	</head>
 	<body>
 		<form id="form1" runat="server">
-			<input type="hidden" name="hdAction" /><input type="hidden" name="hdSubAction" /><input type="hidden" name="hdTermDate" />
+			<input type="hidden" id="hdAction" name="hdAction" /><input type="hidden" id="hdSubAction" name="hdSubAction" /><input type="hidden" name="hdTermDate" />
 			<asp:literal id="litHiddens" runat="server" enableviewstate="False"></asp:literal>
 			<table style="POSITION: absolute; TOP: 14px; LEFT: 140px" class="PrimaryTbl" border="0"
 				cellspacing="0" cellpadding="0" width="650">
@@ -223,17 +223,16 @@
 				}
 			}
 			function Update()  {
-			    form1.hdAction.value = "update"
-				//document.getElementsByTagName("form")[0].submit()
+			    document.getElementById("hdAction").value = "update"			    
 				form1.submit()
 			}
 			
 			function ReturnToParentPage()  {
-				form1.hdAction.value = "return"
-				form1.submit()
+			    document.getElementById("hdAction").value = "return"
+			    form1.submit()
 			}
 			
-       	function ToggleCompany(vIn) {
+       	    function ToggleCompany(vIn) {
 				if (vIn == "BVI") {
 					if (form1.chkOther.checked) {
 						form1.chkOther.checked = false
@@ -251,7 +250,8 @@
 			}	
 			
 			function HandleTermDate()  {	
-				if(form1.ddStatusCode.value == "TERMINATED" && (form1.ddRole.value == "ENROLLER" || form1.ddRole.value == "SUPERVISOR"))  {
+				//if(form1.ddStatusCode.value == "TERMINATED" && (form1.ddRole.value == "ENROLLER" || form1.ddRole.value == "SUPERVISOR"))  {
+			    if (document.getElementById("ddStatusCode").value == "TERMINATED" && (document.getElementById("ddRole").value == "ENROLLER" || document.getElementById("ddRole").value == "SUPERVISOR")) {
 					eval("TermDate").popup()			
 				}
 			}
@@ -261,8 +261,8 @@
 			}
 			
 			function fnToggleSection(vIn)  {
-				form1.hdAction.value = "clientselectionchanged"
-				form1.hdSubAction.value = vIn
+			    document.getElementById("hdAction").value = "clientselectionchanged"
+			    document.getElementById("hdSubAction").value = vIn
 				form1.submit()
 			}				
 		
@@ -276,42 +276,11 @@
 						txtbox.value = txtbox.value.substring(0, txtbox.value.length-1)
 					}
 			}				
-/*			
-			function fnAlphaNumericOnly()
-			{
-					var txtbox = form1.txtPhoneExtension
-					var ToTest = txtbox.value
-					//var txtbox = document.getElementByID("adriano")
-					var re = /[^0-9A-Za-z]/
-					if (re.test(ToTest)) {
-						txtbox.value = txtbox.value.substring(0, txtbox.value.length-1)
-					}
-			}	
-*/
-/*			
-			function fnIntegerOnly(txtbox)  {
-				var i
-				var ValidChars = "0123456789";
-				var Text
-				var Char
-				var IsValid=true
-
-				Text = txtbox.value
-				for (i=0;i<Text.length;i++)  {
-					Char = Text.charAt(i)
-					if (ValidChars.indexOf(Char) == -1)  {
-						IsValid = false
-					}	
-				}
-				if (IsValid == false)  {
-					txtbox.value = txtbox.value.substring(0, txtbox.value.length-1)
-				}				
-			}													
-*/			
+			
 			</script>
 		</form>
 		<script type="text/javascript">
-			if (form1.txtLongTermCareCertEffectiveDate != null)  {
+			if (document.getElementById("txtLongTermCareCertEffectiveDate") != null)  {
 				var LongTermCareCertEffectiveDate = new calendar2(document.forms['form1'].elements['txtLongTermCareCertEffectiveDate']); 
 				LongTermCareCertEffectiveDate.year_scroll = true; LongTermCareCertEffectiveDate.time_comp = false;
 					

@@ -14,8 +14,8 @@
 	</head>
 	<body>
 		<form id="form1" name="form1" runat="server">
-			<input type="hidden" id="hdAction" name="hdAction" /> <input type="hidden" name="hdSortField" /> <input type="hidden" name="hdCarrierID" />
-			<input type='hidden' name='hdFilterShowHideToggle' id='hdFilterShowHideToggle' value='0' />
+			<input type="hidden" id="hdAction" name="hdAction" /> <input type="hidden" id="hdSortField" name="hdSortField" /> <input type="hidden" name="hdCarrierID" />
+			<input type='hidden' id='hdFilterShowHideToggle' name='hdFilterShowHideToggle' value='0' />
 			<table class="PrimaryTbl" style="LEFT: 140px; POSITION: absolute; TOP: 14px" cellspacing="0" cellpadding="0" width="650" border="0">
 				<tr style="DISPLAY: none">
 					<td width="100"></td>

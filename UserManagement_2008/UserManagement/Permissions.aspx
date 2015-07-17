@@ -14,7 +14,7 @@
 	<body>
 		<form id="form1" name="form1" runat="server">
 			<asp:Literal id="litResponseAction" runat="server" EnableViewState="False"></asp:Literal>
-			<input type="hidden" name="hdAction" /> <input type="hidden" name="hdSortField" /> <input type="hidden" name="hdUserID" />
+			<input type="hidden" id="hdAction" name="hdAction" /> <input type="hidden" id="hdSortField" name="hdSortField" /> <input type="hidden" id="hdUserID" name="hdUserID" />
 			<table class="PrimaryTbl" style="LEFT: 140px; POSITION: absolute; TOP: 14px" cellspacing="0"
 				cellpadding="0" width="650" border="0">
 				<tr>

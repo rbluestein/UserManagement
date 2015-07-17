@@ -1500,6 +1500,7 @@ Public Class DG
         Dim Value As String
         Dim ColumnAttributes As String
         Dim CheckboxLabel As String
+        Dim IDName As String
 
         ' __ Handle column attributes and tooltip
         ColumnAttributes = cColumnColl(ColNum).Attributes
@@ -1515,8 +1516,9 @@ Public Class DG
             CheckboxLabel = cColumnColl(ColNum).FalseText
         End If
 
-        Value = "<input type='checkbox' name='" & cColumnColl(ColNum).ItemName & "|" & dt.Rows(RowNum)(cKeyFieldName).ToText & "' value='on'>&nbsp;" & CheckboxLabel
-        'Value &= "<input type='hidden' name='hd" & cColumnColl(i).ItemName & "|" & dt.Rows(RowNum)(cKeyFieldName) & " value='" & dt.Rows(RowNum)(cColumnColl(i).DataFldName) & "'>"
+        IDName = cColumnColl(ColNum).ItemName & "|" & dt.Rows(RowNum)(cKeyFieldName).ToText
+        'Value = "<input type='checkbox' name='" & cColumnColl(ColNum).ItemName & "|" & dt.Rows(RowNum)(cKeyFieldName).ToText & "' value='on'>&nbsp;" & CheckboxLabel
+        Value = "<input type='checkbox' id='" & IDName & "' name='" & IDName & "' value='on'>&nbsp;" & CheckboxLabel
 
         ' ___ This is provided as an alternative way of iterating through the checkbox items.
         cCheckboxToggleColl(cColumnColl(ColNum).ItemName).append(dt.Rows(RowNum)(cKeyFieldName).ToText & "~" & dt.Rows(RowNum)(cColumnColl(ColNum).DataFldName).ToText & "|")
@@ -1690,8 +1692,6 @@ Public Class DG
 
     Private Sub HandleHiddenColumn(ByVal ColNum As Integer, ByRef dt As Data.DataTable, ByVal RowNum As Integer, ByRef sb As System.Text.StringBuilder)
         Dim Value As String
-
-        'Value = "<input type='hidden' id='" & cColumnColl(ColNum).ItemName & "|" & dt.Rows(RowNum)(cKeyFieldName) & "' name='" & cColumnColl(ColNum).ItemName & "|" & dt.Rows(RowNum)(cKeyFieldName) & "' value=""" & dt.Rows(RowNum)(cColumnColl(ColNum).DataFldName) & """>"
         Value = "<input type='hidden' id='" & cColumnColl(ColNum).ItemName & "|" & dt.Rows(RowNum)(cKeyFieldName).ToText & "' name='" & cColumnColl(ColNum).ItemName & "|" & dt.Rows(RowNum)(cKeyFieldName).ToText & "' value=""" & dt.Rows(RowNum)(cColumnColl(ColNum).DataFldName).ToText & """>"
         cHiddenColumnColl(cColumnColl(ColNum).ItemName).add(dt.Rows(RowNum)(cKeyFieldName).ToText & "~" & dt.Rows(RowNum)(cColumnColl(ColNum).DataFldName).ToText)
         sb.Append(Value)

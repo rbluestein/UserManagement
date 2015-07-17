@@ -2,6 +2,9 @@
 Imports System.Data.SqlClient
 Imports System.IO
 
+' document.getElementsByTagName("form")[0].submit()
+
+
 Partial Class Index
     Inherits System.Web.UI.Page
 

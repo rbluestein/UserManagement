@@ -11,6 +11,11 @@ document.getElementById("hdAction").value = "Sort"
 document.getElementById("hdAction").value = "ApplyFilter"
 document.getElementById("hdAction").value = "ExistingRecord"
 document.getElementById("hdAction").value = "Permissions"
+document.getElementById("hdAction").value = "update"
+document.getElementById("hdAction").value = "License"
+document.getElementById("hdAction").value = "Download"
+
+
 
 document.getElementById("hdSortField").value = vField
 
